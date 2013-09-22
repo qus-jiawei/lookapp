@@ -11,7 +11,7 @@ import time
 import re
 import operator 
 
-nodedata = "/home/qiujw/MyHadoop/lookapp/nodedata"
+#nodedata = "/home/qiujw/MyHadoop/lookapp/nodedata"
 regex = ur"[0-9]{13}_[0-9]{4,5}"
 
 def node_container_data(type,date,start,end,top):
@@ -27,7 +27,7 @@ def node_container_data(type,date,start,end,top):
     appcache = {}
     containercache = {}
 
-    temp = os.path.join(nodedata,date);
+    temp = os.path.join(config.nodedata,date);
     if not os.path.isfile(temp):
         raise Exception ,'no data dir '+temp
 

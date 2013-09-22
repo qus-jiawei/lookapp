@@ -1,9 +1,10 @@
 import json
-from app import app 
-from app import data 
+
 from flask import render_template
 from flask import request
 from flask import Markup
+from app import app
+from app import data
 
 import time
 
@@ -29,6 +30,10 @@ def index():
         return gethtml(xaxis,series,appseries,type,today,start,end,top)
     else :
         return "ERROR with start=" + str(start) +" end="+ str(end)
+
+@app.route('/yarn') 
+def yarn():
+    return render_template("yarn.html")
 
 def gethtml(xaxis,series,appseries,type,date,start,end,top):
     if start == 0 :
