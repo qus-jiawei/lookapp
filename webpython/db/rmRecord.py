@@ -33,7 +33,7 @@ class rmRecord(Base):
         if not temp:
             temp = 0
         temp = temp + value
-        setattr(self,key,value)
+        setattr(self,key,temp)
         
     def set(self,key,value):
         setattr(self,key,value)
