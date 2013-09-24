@@ -44,15 +44,22 @@ class collector:
         for app in apps["apps"]["app"]:
             startTime = time.time()
             appid =  app["id"]
-            try:                
-                jobid = util.appidToJobid(appid)
-                jobHistory = self.getJobHistory(jobid)
-                jobCounter = self.getJobCounter(jobid)
-                jobTasks = self.getJobAllTask(jobid)
-                self.updateWithAppid(app,jobHistory,jobCounter)
-            except:
-                logger.exception("get error while doing app "+appid)
-            endTime = time.time()
+            if app['state'] == 'FINISHED':
+                try:                
+                    jobid = util.appidToJobid(appid)
+                    jobHistory = self.getJobHistory(jobid)
+                    if jobHistory: 
+                        jobCounter = self.getJobCounter(jobid)
+                        jobTasks = self.getJobAllTask(jobid)
+                        self.updateWithAppid(app,jobHistory,jobCounter)
+                    else:
+                        logger.info("find some app run success but no history file:"+appid)
+                except:
+                    logger.exception("get error while doing app "+appid)
+                endTime = time.time()
+            else:
+                self.updateWithNotSuccAppid(app)
+                
             logger.info("getting appid: %s using %d ms" % (appid, (endTime - startTime)*1000))
             
         endCollectTime = time.time()
@@ -198,7 +205,17 @@ class collector:
                         nm.inc("hdfsWrite",counter["value"])
             else:
                 continue
-
+    def updateWithNotSuccAppid(self,app):
+        amNode = self.getNodeFromAddress(app['amHostHttpAddress'])
+        appHappenTime = util.getIntervalTime(app['startedTime'])
+        rm = self.getRm(self.recordTime,appHappenTime)
+        
+        rm.inc("appNum",1)
+        if app['stats'] == 'KILLED':
+            rm.inc("killedApp",1)
+        elif app['stats'] == 'FAILED':
+            rm.inc("failedApp",1)
+        
     def updateWithAppid(self,app,jobHistory,jobCounter):
         #update nm and rm
         amNode = self.getNodeFromAddress(app['amHostHttpAddress'])
@@ -210,8 +227,10 @@ class collector:
         nm.inc("amNum",1);
 
         rm.inc("appNum",1)
+        rm.inc("finishedNum",1)
+        
         if app['finalStatus'] != "SUCCEEDED":
-            rm.inc("failApp",1)
+            rm.inc("notSuccApp",1)
         #end update
         appid =  app["id"]
         appRecord = self.getAppidRecord(appid)

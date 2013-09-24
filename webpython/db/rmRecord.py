@@ -9,7 +9,10 @@ class rmRecord(Base):
     happenTime = Column(Integer, primary_key=True)
     
     appNum = Column(SmallInteger)
-    failApp = Column(SmallInteger)
+    finishedApp = Column(SmallInteger)
+    failedApp = Column(SmallInteger)
+    killedApp = Column(SmallInteger)
+    notSuccApp = Column(SmallInteger)
     
     mapNum = Column(SmallInteger)
     mapTime = Column(Integer)
