@@ -10,10 +10,15 @@ class nmRecord(Base):
     happenTime = Column(Integer, primary_key=True)
     
     containerNum = Column(SmallInteger)
+    
     mapNum = Column(SmallInteger)
     mapTime = Column(Integer)
+    failMap = Column(Integer)
+    
     reduceNum = Column(SmallInteger)
     reduceTime = Column(Integer)
+    failReduce = Column(Integer)
+    
     amNum = Column(SmallInteger)
     failConNum = Column(SmallInteger)
     
