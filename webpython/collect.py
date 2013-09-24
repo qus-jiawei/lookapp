@@ -206,7 +206,6 @@ class collector:
             else:
                 continue
     def updateWithNotSuccAppid(self,app):
-        amNode = self.getNodeFromAddress(app['amHostHttpAddress'])
         appHappenTime = util.getIntervalTime(app['startedTime'])
         rm = self.getRm(self.recordTime,appHappenTime)
         
@@ -227,7 +226,7 @@ class collector:
         nm.inc("amNum",1);
 
         rm.inc("appNum",1)
-        rm.inc("finishedNum",1)
+        rm.inc("finishedApp",1)
         
         if app['finalStatus'] != "SUCCEEDED":
             rm.inc("notSuccApp",1)
