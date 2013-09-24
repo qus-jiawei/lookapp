@@ -240,5 +240,6 @@ class collector:
         self.nm[node][recordTime][key]+=value
     
 if __name__ == "__main__":
+    time.sleep(1)
     coll = collector()
     coll.run()    
