@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf8
 
-import config
+from lib import config
 import sqlite3
 
 class database:
@@ -21,6 +21,12 @@ class database:
         self.conn.close();
 
 if __name__ == '__main__':
-    db = database();
+#     conn = sqlite3.connect(config.sqlitepath) 
+#     cursor = conn.cursor()
+#     #初始化
+#     cursor.execute('select * from haha');
+#     print cursor.fetchall()
+    print "debug"
+    
     
 

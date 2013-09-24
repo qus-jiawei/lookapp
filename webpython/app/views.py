@@ -4,8 +4,8 @@ from flask import render_template
 from flask import request
 from flask import Markup
 from app import app
-from app import data
-
+# import data
+import data
 import time
 
 @app.route('/') 
