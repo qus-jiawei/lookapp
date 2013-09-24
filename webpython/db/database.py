@@ -33,11 +33,11 @@ def showAll():
     conn = sqlite3.connect(config.sqlitepath) 
     cursor = conn.cursor()
     #初始化
-    cursor.execute('select * from app');
+    cursor.execute('select * from app limit 10');
     print cursor.fetchall()
-    cursor.execute('select * from nm');
+    cursor.execute('select * from nm limit 10');
     print cursor.fetchall()
-    cursor.execute('select recordTime,happenTime from rm');
+    cursor.execute('select * from rm limit 10');
     print cursor.fetchall()
 # class User(Base):
 #     __tablename__ = 'users'

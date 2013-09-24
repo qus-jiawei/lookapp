@@ -30,6 +30,11 @@ def getIntervalTime(time):
         time /= 1000
     return (int(time)/config.collect_interval)*config.collect_interval
     
+#转化为10为的长度,且转化为开头的整10分钟
+def getSecondTime(time):
+    if time > 1000000000000L:
+        time /= 1000
+    return time
 
 if __name__ == "__main__":
     appid = jobidToAppid("job_1378260371176_276610")   

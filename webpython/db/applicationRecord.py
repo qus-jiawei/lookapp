@@ -11,7 +11,7 @@ class applicationRecord(Base):
     user = Column(String(10))
     name = Column(String(20))
     queue = Column(String(20))
-    startTime = Column(Integer)
+    startedTime = Column(Integer)
     finishedTime = Column(Integer)
     state = Column(String(20))
     finalStatus = Column(String(20))

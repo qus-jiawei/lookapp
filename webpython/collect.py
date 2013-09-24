@@ -204,7 +204,10 @@ class collector:
         appRecord = self.getAppidRecord(appid)
         keyFromApp = ["user","name","queue","startedTime","finishedTime","state","finalStatus"]
         for key in keyFromApp:
-            appRecord.set(key,app[key])
+            if key == "startedTime" or key == "finishedTime":
+                appRecord.set(key,util.getSecondTime(app[key]))
+            else:    
+                appRecord.set(key,app[key])
         #todo
         appRecord.set("attemptNumber",1)
         keyFromHistory = ["mapsTotal","mapsCompleted","successfulMapAttempts",
