@@ -16,7 +16,7 @@ def appidToJobid(appid):
 def getHttp(url):
     try:
         req = urllib2.Request(url)
-        response = urllib2.urlopen(req , timeout = 30)
+        response = urllib2.urlopen(req , timeout = 10)
         html = response.read()
         return html
     except:
