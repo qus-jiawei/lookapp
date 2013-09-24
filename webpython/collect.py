@@ -156,7 +156,7 @@ class collector:
             if attempt['state'] != "SUCCEEDED":
                 rm.inc("failMap",1)
                 nm.inc("failMap",1)
-        elif attempt['type'] == 'reduce':
+        elif attempt['type'] == 'REDUCE':
             rm.inc("reduceNum",1)
             nm.inc("reduceNum",1)
             rm.inc("reduceTime",attempt['elapsedTime'])
