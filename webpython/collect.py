@@ -40,14 +40,19 @@ class collector:
             return
 
         for app in apps["apps"]["app"]:
+            startTime = time.time()
             appid =  app["id"]
-            print appid
-            logger.info("getting appid: "+appid)
-            jobid = util.appidToJobid(appid)
-            jobHistory = self.getJobHistory(jobid)
-            jobCounter = self.getJobCounter(jobid)
-            jobTasks = self.getJobAllTask(jobid)
-            self.updateWithAppid(app,jobHistory,jobCounter)
+            try:                
+                jobid = util.appidToJobid(appid)
+                jobHistory = self.getJobHistory(jobid)
+                jobCounter = self.getJobCounter(jobid)
+                jobTasks = self.getJobAllTask(jobid)
+                self.updateWithAppid(app,jobHistory,jobCounter)
+            except:
+                logger.exception("get error while doing app"+appid)
+            endTime = time.time()
+            logger.info("getting appid: %s using %d ms" % (appid, (endTime - startTime)*1000))
+            
         
         session = database.getSession()
         for (appid,appRecord) in self.appList.items():

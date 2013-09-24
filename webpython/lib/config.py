@@ -19,15 +19,15 @@ nmport=59842
 rmhost="mob616"
 rmport="50088"
 
-rmhost="hadoop2"
-rmport="59088"
+# rmhost="hadoop2"
+# rmport="59088"
 
 #resource manager's host and port
 hshost="mob616"
 hsport="50888"
 
-hshost="hadoop1"
-hsport="59888"
+# hshost="hadoop1"
+# hsport="59888"
 
 #collect run interval
 collect_interval=600
