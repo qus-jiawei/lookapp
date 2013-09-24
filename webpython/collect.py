@@ -73,13 +73,16 @@ class collector:
         url = ("http://%s:%s/ws/v1/history/mapreduce/jobs/%s/tasks"
                % (config.hshost,config.hsport,jobid))
         tasks = self.getHttpJson(url)
-        if not tasks:
+        if not tasks or not tasks.has_key('tasks') or not tasks['tasks'].has_key('task') :
             return
         for task in tasks['tasks']['task']:
             taskId = task['id']
             url = ("http://%s:%s/ws/v1/history/mapreduce/jobs/%s/tasks/%s/attempts"
                % (config.hshost,config.hsport,jobid,taskId))
             attempts = self.getHttpJson(url)
+            if not attempts or not attempts.has_key('taskAttempts') \
+                or not attempts['taskAttempts'].has_key('taskAttempt') :
+                return
             for attempt in attempts['taskAttempts']['taskAttempt']:
                 attemptId = attempt['id']
                 url = ("http://%s:%s/ws/v1/history/mapreduce/jobs/%s/tasks/%s/attempts/%s/counters"
@@ -159,6 +162,9 @@ class collector:
                 rm.inc("failReduce",1)
                 nm.inc("failReduce",1)
         #*********************************
+        if not attemptCounter or not attemptCounter.has_key('jobTaskAttemptCounters') \
+            or not attemptCounter['jobTaskAttemptCounters'].has_key('taskAttemptCounterGroup'):
+            return 
         for taskAttemptCounterGroup in attemptCounter['jobTaskAttemptCounters']['taskAttemptCounterGroup']:
             if taskAttemptCounterGroup['counterGroupName'] == "org.apache.hadoop.mapreduce.FileSystemCounter":
                 for counter in taskAttemptCounterGroup['counter']:
