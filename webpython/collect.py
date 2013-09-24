@@ -38,7 +38,8 @@ class collector:
         if not apps or not apps["apps"]:
             logger.info("no appid match")
             return
-
+        
+        startCollectTime = time.time()
         for app in apps["apps"]["app"]:
             startTime = time.time()
             appid =  app["id"]
@@ -49,11 +50,13 @@ class collector:
                 jobTasks = self.getJobAllTask(jobid)
                 self.updateWithAppid(app,jobHistory,jobCounter)
             except:
-                logger.exception("get error while doing app"+appid)
+                logger.exception("get error while doing app "+appid)
             endTime = time.time()
             logger.info("getting appid: %s using %d ms" % (appid, (endTime - startTime)*1000))
-            
+        endCollectTime = time.time()
+        logger.info("using %d ms to collect the data" % (endCollectTime - startCollectTime)*1000)
         
+        startFlushTime = time.time()
         session = database.getSession()
         for (appid,appRecord) in self.appList.items():
             session.merge(appRecord)
@@ -69,7 +72,8 @@ class collector:
             session.merge(rmRecord)
         session.commit()
         logger.info("push %d rmRecord into table" % (len(self.rmList)))
-        
+        endFlushTime = time.time()
+        logger.info("using %d ms to push to the db" % (endFlushTime - startFlushTime)*1000)
             
         
     def getJobHistory(self,jobid):
