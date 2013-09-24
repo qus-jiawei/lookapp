@@ -10,6 +10,7 @@ class nmRecord(Base):
     happenTime = Column(Integer, primary_key=True)
     
     containerNum = Column(SmallInteger)
+    amNum = Column(SmallInteger)
     
     mapNum = Column(SmallInteger)
     mapTime = Column(Integer)
@@ -18,9 +19,6 @@ class nmRecord(Base):
     reduceNum = Column(SmallInteger)
     reduceTime = Column(Integer)
     failReduce = Column(Integer)
-    
-    amNum = Column(SmallInteger)
-    failConNum = Column(SmallInteger)
     
     fileRead = Column(BigInteger)
     fileWrite = Column(BigInteger)
