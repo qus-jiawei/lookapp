@@ -53,14 +53,17 @@ class collector:
         for (appid,appRecord) in self.appList.items():
             session.merge(appRecord)
         session.commit()
+        logger.info("push %d appRecord into table" % (len(self.appList)))
         
         for (key,nmRecord) in self.nmList.items():
             session.merge(nmRecord)
         session.commit()
+        logger.info("push %d nmRecord into table" % (len(self.nmList)))
         
         for (key,rmRecord) in self.rmList.items():
             session.merge(rmRecord)
         session.commit()
+        logger.info("push %d rmRecord into table" % (len(self.rmList)))
         
             
         
