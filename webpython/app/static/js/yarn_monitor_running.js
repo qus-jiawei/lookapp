@@ -65,7 +65,6 @@ function showRunningApp(runningApp){
 	var index = 1;
 	var appidList = [];
 	for(var queueName in runningApp["queues"]){
-		console.log(queueName);
 		var queue = runningApp["queues"][queueName];
 		addQueuePanel("running-accordion","队列:["+queueName+"]",getQueuePanelHtml(queueName,queue),"panel"+index);
 		index++;
@@ -84,9 +83,6 @@ function loadRunningAppInfo(appid){
 				var key = keyList[k]
 				$("#"+appid+"-"+key).text(jobinfo[key])
 			}
-			console.log("#"+appid+"-reduce")
-			console.log(jobinfo['reduce'])
-			console.log(appQuery.responseText)
     	}
   	}
 	var url = "/db/appProxy?appid="+appid;
@@ -104,11 +100,9 @@ function loadRunningApp(){
 				appid = runningAppList[key]
 				loadRunningAppInfo(appid)
 			}
-			console.log(runningAppList)
     	}
   	}
 	var url = "db/appRunning";
-	console.log(url)
 	appQuery.open("GET",url,true);
 	appQuery.send();
 }
