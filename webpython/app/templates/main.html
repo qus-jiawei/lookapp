@@ -1,29 +1,29 @@
-<div class="container">
-	<div class="row">
+<div class="container-fluid">
+	<div class="row-fluid">
 		<div class="span12">
 			<h3>
 				Hadoop Yarn监控系统
 			</h3>
 			<div class="tabbable" id="tabs-262587">
 				<ul class="nav nav-tabs">
-					<li>
-						<a data-toggle="tab" href="#panel-1">ResourceManager</a>
+					<li class="active">
+						<a data-toggle="tab" href="#panel-1" onclick="runningQuery()">应用运行</a>
 					</li>
 					<li>
 						<a data-toggle="tab" href="#panel-2">NodeManager</a>
 					</li>
-					<li class="active">
-						<a data-toggle="tab" href="#panel-3">Applications</a>
+					<li>
+						<a data-toggle="tab" href="#panel-3" onclick="appQuery()">App选择器</a>
 					</li>
 				</ul>
 				<div class="tab-content">
-					<div class="tab-pane" id="panel-1">
-						{% include "rm.html" %}
+					<div class="tab-pane  active" id="panel-1">
+						{% include "running.html" %}
 					</div>
 					<div class="tab-pane" id="panel-2">
 						{% include "nm.html" %}
 					</div>
-					<div class="tab-pane active" id="panel-3">
+					<div class="tab-pane" id="panel-3">
 						{% include "apps.html" %}
 					</div>
 				</div>

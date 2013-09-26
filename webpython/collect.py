@@ -90,19 +90,19 @@ class collector:
     def getJobHistory(self,jobid):
         url = ("http://%s:%s/ws/v1/history/mapreduce/jobs/%s" 
                % (config.hshost,config.hsport,jobid))
-        return self.getHttpJson(url)
+        return util.getHttpJson(url)
     
     def getJobAllTask(self,jobid):
         url = ("http://%s:%s/ws/v1/history/mapreduce/jobs/%s/tasks"
                % (config.hshost,config.hsport,jobid))
-        tasks = self.getHttpJson(url)
+        tasks = util.getHttpJson(url)
         if not tasks or not tasks.has_key('tasks') or not tasks['tasks'].has_key('task') :
             return
         for task in tasks['tasks']['task']:
             taskId = task['id']
             url = ("http://%s:%s/ws/v1/history/mapreduce/jobs/%s/tasks/%s/attempts"
                % (config.hshost,config.hsport,jobid,taskId))
-            attempts = self.getHttpJson(url)
+            attempts = util.getHttpJson(url)
             if not attempts or not attempts.has_key('taskAttempts') \
                 or not attempts['taskAttempts'].has_key('taskAttempt') :
                 return
@@ -110,7 +110,7 @@ class collector:
                 attemptId = attempt['id']
                 url = ("http://%s:%s/ws/v1/history/mapreduce/jobs/%s/tasks/%s/attempts/%s/counters"
                    % (config.hshost,config.hsport,jobid,taskId,attemptId))
-                attemptCounter = self.getHttpJson(url)
+                attemptCounter = util.getHttpJson(url)
                 self.updateWithAttempt(attempt,attemptCounter)
 
                     
@@ -148,14 +148,7 @@ class collector:
     def getAppList(self):
         url = ("http://%s:%s/ws/v1/cluster/apps?finishedTimeBegin=%d&finishedTimeEnd=%d" 
             % (config.rmhost,config.rmport,(self.recordTime*1000),(self.recordTime+self.interval)*1000))
-        return self.getHttpJson(url)
-    
-    def getHttpJson(self,url):
-        html = util.getHttp(url)
-        if html:
-            return json.loads(html)
-        else:
-            return {}
+        return util.getHttpJson(url)
         
     #以下是用于程序内计数的函数
     def updateWithAttempt(self,attempt,attemptCounter):
@@ -277,6 +270,7 @@ class collector:
         self.nm[node][recordTime][key]+=value
     
 if __name__ == "__main__":
-    time.sleep(1)
+    #延迟2分钟执行
+    time.sleep(120)
     coll = collector()
     coll.run()    

@@ -19,6 +19,10 @@ def getSession():
     session = Session()
     return session
 
+def getCursor():
+    conn = sqlite3.connect(config.sqlitepath) 
+    return conn.cursor()
+
 def initDB():
     engine = create_engine('sqlite:///'+config.sqlitepath, echo=True)
     applicationRecord.metadata.drop_all(engine)

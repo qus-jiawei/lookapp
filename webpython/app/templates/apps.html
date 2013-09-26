@@ -1,35 +1,62 @@
-<div class="container">
-	<div class="row">
+<div class="container-fluid">
+	<div class="row-fluid">
 		<div class="span12">
-			<div class="row">
+			<div class="row-fluid">
 				<div class="span12">
-					<h3>
-						统计结果
-					</h3>
+					<h5>过滤查询</h5>
+					<div class="row-fluid">
+						<lebal> appid</lebal>
+						<input id="app-params-appid" style="width:200px;" placeholder="应用ID">
+						<lebal> user</lebal>
+						<input id="app-params-user" style="width:50px" placeholder="用户名">
+						<lebal> name</lebal>
+						<input id="app-params-name" style="width:300px" placeholder="应用名称">
+						<lebal> queue</lebal>
+						<input id="app-params-queue" style="width:50px" placeholder="队列">
+						<lebal> state</lebal>
+						<input id="app-params-state" style="width:50px" placeholder="状态">
+						<lebal> finalStatus</lebal>
+						<input id="app-params-finalStatus" style="width:100px" placeholder="运行状态">
+					</div>
+					<button style="width:70px;" class="btn btn-default" onclick="appQuery()">查询</button>
 				</div>
 			</div>
-			<div class="row">
-				<div class="span6">
-					<h3>
-						指标A
-					</h3>
-				</div>
-				<div class="span6">
-					<h3>
-						指标B
-					</h3>
-				</div>
+			<div class="row-fluid">
+				<div class="span12 bs-row">
+					<h5>汇总信息</h5>
+					<div id="app-total-tps">
+					</div>
+				<div>
 			</div>
-			<div class="row">
-				<div class="span6">
-					<h3>
-						指标C
-					</h3>
+			<div class="row-fluid highlight">
+				<p id="apptable-tips" style="display:inline-block"></p>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default" onclick="firstPage()">first</button>
+				  	<button type="button" class="btn btn-default" onclick="prePage()">pre</button>
+				  	<button type="button" class="btn btn-default" onclick="nextPage()">next</button>
+				  	<button type="button" class="btn btn-default" onclick="lastPage()">last</button>
 				</div>
-				<div class="span6">
-					<h3>
-						指标D
-					</h3>
+				<input id="apppage" style="width:50px;" placeholder="页数">
+				<button style="width:70px;" class="btn btn-default" onclick="jumpPage()">跳转</button>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					<table class="table table-bordered table-striped table-hover" id="apptable">
+						<thead>
+							<tr>
+								<th>appid</th>
+								<th>user</th>
+								<th>name</th>
+								<th>queue</th>
+								<th>startTime</th>
+								<th>finishTime</th>
+								<th>state</th>
+								<th>finalStatus</th>
+							</tr>
+						</thead>
+						<tbody id="apptable-body">
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
