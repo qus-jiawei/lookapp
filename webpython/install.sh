@@ -9,3 +9,4 @@ flask/bin/pip install flask-whooshalchemy
 flask/bin/pip install flask-wtf
 flask/bin/pip install flask-babel
 flask/bin/pip install flup
+flask/bin/pip install tornado

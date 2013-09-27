@@ -25,7 +25,7 @@ function formatTableTd(key,value){
 	return value
 }
 function getQueuePanelHtml(queueName,queue){
-	var displayTitleList = new Array("应用id","名称","AM机器","提交至今时间","进度","Am运行时间","Map(待运行,正运行,失败,杀死,成功)","Reduce(待运行,正运行,失败,杀死,成功)")
+	var displayTitleList = new Array("应用id","名称","AM机器","提交至今时间","进度","Am运行时间","Map(总数,待运行,正运行,失败,杀死,成功)","Reduce(总数,待运行,正运行,失败,杀死,成功)")
 	var titleList = new Array("id","name","amHostHttpAddress","elapsedTime","progress")
 	var contentList = new Array();
 	for(var id in queue){
@@ -38,8 +38,8 @@ function getQueuePanelHtml(queueName,queue){
 		}
 		//添加异步回调的td
 		tds[id+"-amTime"] = "-"
-		var idList = ["mapsPending","mapsRunning","failedMapAttempts","killedMapAttempts","successfulMapAttempts",
-		               "reducesPending","reducesRunning","failedReduceAttempts","killedReduceAttempts","successfulReduceAttempts"];
+		var idList = ["mapsTotal","mapsPending","mapsRunning","failedMapAttempts","killedMapAttempts","successfulMapAttempts",
+		              "reducesTotal","reducesPending","reducesRunning","failedReduceAttempts","killedReduceAttempts","successfulReduceAttempts"];
 		for(var key in idList){
 			tds[id+"-"+idList[key]]="--"
 		}
@@ -77,8 +77,8 @@ function loadRunningAppInfo(appid){
 		if (appQuery.readyState==4 && appQuery.status==200){
 			jobinfo = JSON.parse(appQuery.responseText)
 			$("#"+appid+"-amTime").text(formatElapsedTime(jobinfo['amTime']))
-			var keyList = ["mapsPending","mapsRunning","failedMapAttempts","killedMapAttempts","successfulMapAttempts",
-			               "reducesPending","reducesRunning","failedReduceAttempts","killedReduceAttempts","successfulReduceAttempts"];
+			var keyList = ["mapsTotal","mapsPending","mapsRunning","failedMapAttempts","killedMapAttempts","successfulMapAttempts",
+			               "reducesTotal","reducesPending","reducesRunning","failedReduceAttempts","killedReduceAttempts","successfulReduceAttempts"];
 			for(var k in keyList){
 				var key = keyList[k]
 				$("#"+appid+"-"+key).text(jobinfo[key])

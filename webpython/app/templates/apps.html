@@ -18,6 +18,19 @@
 						<lebal> finalStatus</lebal>
 						<input id="app-params-finalStatus" style="width:100px" placeholder="运行状态">
 					</div>
+					<div>
+						<lebal> finishTime </lebal>
+						<select id="app-params-finishTime">
+						  <option value ="10">最近10分钟</option>
+						  <option value ="60">最近1小时</option>
+						  <option value ="180">最近3小时</option>
+						  <option value="720">最近12小时</option>
+						  <option selected="selected" value="1440">最近24小时</option>
+						  <option value="4320">最近3天</option>
+						  <option value="10080">最近7天</option>
+						  <option value ="10">所有</option>
+						</select>
+					</div>
 					<button style="width:70px;" class="btn btn-default" onclick="appQuery()">查询</button>
 				</div>
 			</div>

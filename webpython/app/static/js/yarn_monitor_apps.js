@@ -11,6 +11,8 @@ function getParams(){
 			where = where + ' and '+varName+' like "o|o'+temp+'o|o" '
 		}
 	}
+	//结束时间
+	$("#app-params-finishTime").
 	//获取offset
 	var nowpage = getCookie("nowpage");
 	var offset = (nowpage-1)*50;
@@ -40,8 +42,8 @@ function showAppSum(appSum){
 	//本地读写
 	var localRate = (resultRecord["localMapSum"]*100/resultRecord["mapsTotalSum"]).toFixed(1)
 	var rackRate = (resultRecord["rackMapSum"]*100/resultRecord["mapsTotalSum"]).toFixed(1)
-	$('#app-total-tps').append("<p>本地map调度 "+em(resultRecord["localMapSum"])+" 次，调度率占 "+localRate+" %。 "+
-			"机架map调度 "+em(resultRecord["rackMapSum"])+" 次，调度率占 "+rackRate+" %</p>")
+	$('#app-total-tps').append("<p>本地map调度 "+em(resultRecord["localMapSum"])+" 次，调度率占 "+em(localRate)+" %。 "+
+			"机架map调度 "+em(resultRecord["rackMapSum"])+" 次，调度率占 "+em(rackRate)+" %</p>")
 	//reduce
 	rate = (resultRecord["reducesCompletedSum"]*100/resultRecord["reducesTotalSum"]).toFixed(1)
 	attemptSum = resultRecord["successfulReduceAttemptsSum"] + resultRecord["killedReduceAttemptsSum"]

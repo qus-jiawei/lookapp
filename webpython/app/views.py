@@ -122,8 +122,8 @@ def dbappproxy():
     appid = getRequestParam("appid","")
     url = ("http://%s:%s/proxy/%s/ws/v1/mapreduce/jobs/" %(config.rmhost,config.rmport,appid))
     jobInfo = util.getHttpJson(url)
-    keyList = ["mapsPending","mapsRunning","failedMapAttempts","killedMapAttempts","successfulMapAttempts",
-               "reducesPending","reducesRunning","failedReduceAttempts","killedReduceAttempts","successfulReduceAttempts"]
+    keyList = ["mapsTotal","mapsPending","mapsRunning","failedMapAttempts","killedMapAttempts","successfulMapAttempts",
+               "reducesTotal","reducesPending","reducesRunning","failedReduceAttempts","killedReduceAttempts","successfulReduceAttempts"]
     if jobInfo:
         result = {}
         temp = jobInfo["jobs"]["job"][0]

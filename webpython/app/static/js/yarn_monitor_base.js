@@ -50,10 +50,10 @@ function getTrTh(list){
 	for (var key in list){
 		var temp = list[key]
 		if(contain(temp,"Map")){
-			re += "<th colspan=5 >"+list[key]+"</th>"
+			re += "<th colspan=6 >"+list[key]+"</th>"
 		}
 		else if(contain(temp,"Reduce")){
-			re += "<th colspan=5 >"+list[key]+"</th>"
+			re += "<th colspan=6 >"+list[key]+"</th>"
 		}
 		else{
 			re += "<th >"+list[key]+"</th>"
