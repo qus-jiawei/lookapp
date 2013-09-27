@@ -109,6 +109,3 @@ function loadRunningApp(){
 function runningQuery(){
 	loadRunningApp()
 }
-window.onload=function(){
-	runningQuery();
-}

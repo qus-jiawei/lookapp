@@ -29,7 +29,7 @@ function showAppSum(appSum){
 	$('#app-total-tps').append("<p>一共有 "+em(resultRecord["appidCount"])+" 个Appid符合筛选。</p>")
 	var rate,attemptSum
 	//map
-	rate = (resultRecord["mapsCompletedSum"]*100/resultRecord["mapsTotalSum"])
+	rate = (resultRecord["mapsCompletedSum"]*100/resultRecord["mapsTotalSum"]).toFixed(1)
 	attemptSum = resultRecord["successfulMapAttemptsSum"] + resultRecord["killedMapAttemptsSum"]
 			+ resultRecord["failedMapAttemptsSum"];
 	$('#app-total-tps').append("<p>产生 "+em(resultRecord["mapsTotalSum"])+" 个map任务 ,完成了"+
@@ -37,8 +37,13 @@ function showAppSum(appSum){
 			"进行了"+em(attemptSum)+" 次map的尝试，成功了"+em(resultRecord["successfulMapAttemptsSum"])+" 次，"+
 			"失败了"+em(resultRecord["failedMapAttemptsSum"])+" 次, 终止了 "+em(resultRecord["killedMapAttemptsSum"])+" 次。"
 			)
+	//本地读写
+	var localRate = (resultRecord["localMapSum"]*100/resultRecord["mapsTotalSum"]).toFixed(1)
+	var rackRate = (resultRecord["rackMapSum"]*100/resultRecord["mapsTotalSum"]).toFixed(1)
+	$('#app-total-tps').append("<p>本地map调度 "+em(resultRecord["localMapSum"])+" 次，调度率占 "+localRate+" %。 "+
+			"机架map调度 "+em(resultRecord["rackMapSum"])+" 次，调度率占 "+rackRate+" %</p>")
 	//reduce
-	rate = (resultRecord["reducesCompletedSum"]*100/resultRecord["reducesTotalSum"])
+	rate = (resultRecord["reducesCompletedSum"]*100/resultRecord["reducesTotalSum"]).toFixed(1)
 	attemptSum = resultRecord["successfulReduceAttemptsSum"] + resultRecord["killedReduceAttemptsSum"]
 			+ resultRecord["failedReduceAttemptsSum"];
 	$('#app-total-tps').append("<p>产生 "+em(resultRecord["reducesTotalSum"])+" 个reduce任务 ,完成了"+
