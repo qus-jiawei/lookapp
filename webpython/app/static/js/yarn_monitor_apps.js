@@ -12,7 +12,7 @@ function getParams(){
 		}
 	}
 	//结束时间
-	$("#app-params-finishTime").
+	//$("#app-params-finishTime").
 	//获取offset
 	var nowpage = getCookie("nowpage");
 	var offset = (nowpage-1)*50;
