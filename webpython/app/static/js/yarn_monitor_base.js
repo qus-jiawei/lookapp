@@ -44,13 +44,13 @@ function datetime_to_unix(datetime){
 }
 function unix_to_datetime(unix) {
     var now = new Date(parseInt(unix));
-    return now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+" "
-    	+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
+    return now.getFullYear()+"-"+padZero(now.getMonth()+1,2)+"-"+padZero(now.getDate(),2)+" "
+    	+padZero(now.getHours(),2)+":"+padZero(now.getMinutes(),2)+":"+padZero(now.getSeconds());
 }
 function unix_to_datetimeNoSecond(unix) {
     var now = new Date(parseInt(unix));
-    return now.getFullYear()+"-"+padZero(now.getMonth()+1,2)+"-"+now.getDate()+" "
-    	+now.getHours()+":"+now.getMinutes();
+    return now.getFullYear()+"-"+padZero(now.getMonth()+1,2)+"-"+padZero(now.getDate(),2)+" "
+    	+padZero(now.getHours(),2)+":"+padZero(now.getMinutes(),2);
 }
 function padZero(str, length) {
     var strLen = str.length;

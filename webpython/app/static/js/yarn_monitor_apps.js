@@ -107,7 +107,7 @@ function showAppList(queryResult){
 				tds+="<td>"+temp+"</td>"
 			}
 			else if(i==2){
-				tds+="<td  class='apptd' style='width:200px'>"+app[i]+"</td>"
+				tds+="<td  class='app-name-col'>"+app[i]+"</td>"
 			}
 			else if(i==4 || i==5){//转换开始和结束时间
 				var time = unix_to_datetime(app[i]*1000);
