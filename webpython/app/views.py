@@ -17,7 +17,7 @@ import time
 
 log.initLogger('views.log')
 
-@app.route('/') 
+
 @app.route('/index') 
 @app.route('/lookapp') 
 def index():
@@ -65,6 +65,7 @@ def gethtml(xaxis,series,appseries,type,date,start,end,top):
             series2 = Markup(json.dumps(appseries)),
             )
     
+@app.route('/') 
 @app.route('/yarn') 
 def yarn():
     return render_template("yarn.html")
@@ -75,11 +76,17 @@ def dbapplist():
     limit = getRequestInt("limit",50)
     where = getRequestParam("where","1")
     cursor = database.getCursor()
-    sql = ("select * from app where %s order by appid LIMIT %d OFFSET %d " % (where,limit,offset))
+    selectKeyArray=["appid","user","name","queue","startedTime","finishedTime","state","finalStatus",
+               "attemptNumber","mapsTotal","mapsCompleted","localMap","reducesTotal","reducesCompleted",
+               "fileRead","fileWrite","hdfsRead","hdfsWrite"]
+    selectKey = ",".join(selectKeyArray)
+    sql = ("select "+selectKey+" from app where %s order by appid LIMIT %d OFFSET %d " % (where,limit,offset))
     print sql
 #     return sql
     cursor.execute(sql)
-    return json.dumps(cursor.fetchall())
+    queryResult = cursor.fetchall()
+    retult={"applist":queryResult,"rmhost":config.rmhost,"rmport":config.rmport}
+    return json.dumps(retult)
 
 @app.route('/db/appSum')
 def dbappsum():
@@ -132,6 +139,7 @@ def dbappproxy():
             result[key] = temp[key]
         return json.dumps(result)
     else:
+        result = {}
         result["amTime"] ="x"
         for key in keyList:
             result[key] = "x"

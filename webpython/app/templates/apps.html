@@ -18,21 +18,44 @@
 						<lebal> finalStatus</lebal>
 						<input id="app-params-finalStatus" style="width:100px" placeholder="运行状态">
 					</div>
-					<!-- 
-					<div>
-						<lebal> finishTime </lebal>
-						<select id="app-params-finishTime">
+					<div style ="padding-top: 10px">
+						<lebal> startTime&nbsp; </lebal>
+						<select id="app-params-startTime-select" onchange="changeStartTimeParams()" class="chosen-select">
+						  <option selected="selected" value ="-1">无</option>
 						  <option value ="10">最近10分钟</option>
 						  <option value ="60">最近1小时</option>
 						  <option value ="180">最近3小时</option>
 						  <option value="720">最近12小时</option>
-						  <option selected="selected" value="1440">最近24小时</option>
+						  <option value="1440">最近24小时</option>
 						  <option value="4320">最近3天</option>
 						  <option value="10080">最近7天</option>
-						  <option value ="10">所有</option>
+						  <option value ="-2">自定义</option>
 						</select>
+						<div style="display:none" id="app-params-startTime-divs">
+							<input id="app-params-startTime-min" type="text"  style="width:170px;height:30px;" class="form_datetime"  value="">
+							<lebal> &lt; startTime &lt; </lebal>
+							<input id="app-params-startTime-max" type="text"  style="width:170px;height:30px;" class="form_datetime"  value="">
+						</div>
 					</div>
-					 -->
+					<div style ="padding-top: 10px">
+						<lebal> finishTime </lebal>
+						<select id="app-params-finishTime-select" onchange="changeFinishTimeParams()" class="chosen-select">
+						  <option selected="selected" value ="-1">无</option>
+						  <option value ="10">最近10分钟</option>
+						  <option value ="60">最近1小时</option>
+						  <option value ="180">最近3小时</option>
+						  <option value="720">最近12小时</option>
+						  <option value="1440">最近24小时</option>
+						  <option value="4320">最近3天</option>
+						  <option value="10080">最近7天</option>
+						  <option value ="-2">自定义</option>
+						</select>
+						<div style="display:none" id="app-params-finishTime-divs" >
+							<input id="app-params-finishTime-min" type="text" style="width:170px;height:30px;"  class="form_datetime" value="">
+							<lebal> &lt; finishTime &lt; </lebal>
+							<input id="app-params-finishTime-max" type="text" style="width:170px;height:30px;"  class="form_datetime" value="">
+						</div>
+					</div>
 					<button style="width:70px;" class="btn btn-default" onclick="appQuery()">查询</button>
 				</div>
 			</div>
@@ -59,14 +82,19 @@
 					<table class="table table-bordered table-striped table-hover" id="apptable">
 						<thead>
 							<tr>
-								<th>appid</th>
-								<th>user</th>
-								<th>name</th>
-								<th>queue</th>
-								<th>startTime</th>
-								<th>finishTime</th>
-								<th>state</th>
-								<th>finalStatus</th>
+								<th>应用id</th>
+								<th>用户</th>
+								<th style='width:200px'>名称</th>
+								<th>队列</th>
+								<th>开始时间</th>
+								<th>结束时间</th>
+								<th>状态</th>
+								<th>结果</th>
+								<th>重试</th>
+								<th colspan="3">map(全部，完成，本地)</th>
+								<th colspan="2">reduce(全部，完成)</th>
+								<th colspan="2">本地读写(读，写)MB</th>
+    							<th colspan="2">HDFS读写(读，写)MB</th>
 							</tr>
 						</thead>
 						<tbody id="apptable-body">

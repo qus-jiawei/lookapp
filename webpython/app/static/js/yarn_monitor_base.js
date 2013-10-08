@@ -14,16 +14,53 @@ function getCookie(c_name){
 	return ""
 }
 //***********
+function toGSize(bytes){
+	return (bytes/(1024*1024*1024)).toFixed(2); 
+}
+function toMSize(bytes){
+	return (bytes/(1024*1024)).toFixed(2); 
+}
+//***********
+//状态转换
+function toState(state){
+	var map = {"FINISHED":"成功","FAILED":"失败","KILLED":"中止"}
+	return map[state];
+}
+function toFinalStatus(finalStatus){
+	var map = {"SUCCEEDED":"成功","FAILED":"失败","KILLED":"中止","UNDEFINED":"未定义"}
+	return map[finalStatus];
+}
+//***********
 function datetime_to_unix(datetime){
+	if( datetime.length < 4  ) return null;
     var tmp_datetime = datetime.replace(/:/g,'-');
     tmp_datetime = tmp_datetime.replace(/ /g,'-');
     var arr = tmp_datetime.split("-");
+    if( arr.length  < 6 ){
+    	arr[5] = 0
+    }
     var now = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
     return parseInt(now.getTime()/1000);
 }
 function unix_to_datetime(unix) {
     var now = new Date(parseInt(unix));
-    return now.toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ")
+    return now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+" "
+    	+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
+}
+function unix_to_datetimeNoSecond(unix) {
+    var now = new Date(parseInt(unix));
+    return now.getFullYear()+"-"+padZero(now.getMonth()+1,2)+"-"+now.getDate()+" "
+    	+now.getHours()+":"+now.getMinutes();
+}
+function padZero(str, length) {
+    var strLen = str.length;
+    return length > strLen ? new Array(length - strLen + 1).join("0") + str : str;
+}
+function get_now_time(){
+	return new Date().valueOf();
+}
+function get_unix_time(){
+	return Math.floor(new Date().valueOf()/1000);
 }
 //***********
 function getNodeFromAddress(address){

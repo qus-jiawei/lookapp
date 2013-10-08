@@ -11,7 +11,19 @@ function getParams(){
 			where = where + ' and '+varName+' like "o|o'+temp+'o|o" '
 		}
 	}
-	//结束时间
+	//开始时间
+	var startTimeMin = datetime_to_unix($("#app-params-startTime-min")[0].value);
+	var startTimeMax = datetime_to_unix($("#app-params-startTime-max")[0].value);
+	var finishTimeMin = datetime_to_unix($("#app-params-finishTime-min")[0].value);
+	var finishTimeMax = datetime_to_unix($("#app-params-finishTime-max")[0].value);
+	console.log(startTimeMin)
+	console.log(startTimeMax)
+	console.log(finishTimeMin)
+	console.log(finishTimeMax)
+	if( startTimeMin != null ) where = where + ' and startedTime > ' + startTimeMin;
+	if( startTimeMax != null ) where = where + ' and startedTime < ' + startTimeMax;
+	if( finishTimeMin != null ) where = where + ' and finishedTime > ' + finishTimeMin;
+	if( finishTimeMax != null ) where = where + ' and finishedTime < ' + finishTimeMax;
 	//$("#app-params-finishTime").
 	//获取offset
 	var nowpage = getCookie("nowpage");
@@ -21,9 +33,7 @@ function getParams(){
 function em(text){
 	return "<em> "+text+" </em>"
 }
-function toGSize(bytes){
-	return (bytes/(1024*1024*1024)).toFixed(2); 
-}
+
 function showAppSum(appSum){
 	var resultRecord = appSum["resultRecord"];
 	//汇总信息
@@ -80,13 +90,43 @@ function loadAppSum(){
 	appQuery.open("GET",url,true);
 	appQuery.send();
 }
-function showAppList(appList){
+function showAppList(queryResult){
+	rmhost = queryResult['rmhost']
+	rmport = queryResult['rmport']
 	$('#apptable-body').empty()
+	var appList = queryResult['applist']
 	for(var key in appList){
 		var app = appList[key]
 		var tds="";
-		for(var i=0;i<8;i++){
-			tds+="<td class='apptd'>"+app[i]+"</td>"
+		for(var i=0;i<18;i++){
+			//恶心的代码
+			if(i==0){//appid
+				var appid = app[i];
+				var last = appid.lastIndexOf("_")
+				var temp = "<a href=http://"+rmhost+":"+rmport+"/proxy/"+appid+">"+appid.substring(last+1)+"</a>"
+				tds+="<td>"+temp+"</td>"
+			}
+			else if(i==2){
+				tds+="<td  class='apptd' style='width:200px'>"+app[i]+"</td>"
+			}
+			else if(i==4 || i==5){//转换开始和结束时间
+				var time = unix_to_datetime(app[i]*1000);
+				tds+="<td class='apptd' >"+time+"</td>"
+			}
+//			else if(i==6){//状态 运行结果合并到同一个字段
+//				var state = app[i];
+//				var finalStatue = app[i+1];
+//				tds+="<td class='apptd'>"+toState(state)+"/"+toFinalStatus(finalStatue)+"</td>"
+//				i++;
+//			}
+			else if(14<=i && i<18){//appid
+				var mb = toMSize(app[i]);
+				tds+="<td class='apptd'>"+mb+"</td>"
+			}
+			else{
+				tds+="<td class='apptd'>"+app[i]+"</td>"
+			}
+			
 		}
 		var tr = "<tr>"+tds+"</tr>"
 		$('#apptable-body').append(tr)
@@ -148,8 +188,46 @@ function lastPage(){
 		loadAppList();
 	}
 }
-
+function changeStartTimeParams(){
+	var value = $("#app-params-startTime-select option:selected").attr("value")
+	if( value == -2 ){
+		$("#app-params-startTime-divs")[0].style.display = "inline-block";
+		$("#app-params-startTime-min")[0].value = unix_to_datetimeNoSecond(get_now_time()-(24*3600*1000));
+		$("#app-params-startTime-max")[0].value = unix_to_datetimeNoSecond(get_now_time());
+	}
+	else{
+		$("#app-params-startTime-divs")[0].style.display = "none";
+		if( value == -1 ){
+			$("#app-params-startTime-min")[0].value = " ";
+			$("#app-params-startTime-max")[0].value = " ";
+		}
+		else{
+			$("#app-params-startTime-min")[0].value = unix_to_datetimeNoSecond(get_now_time()-(value*60000));
+			$("#app-params-startTime-max")[0].value = " ";
+		}
+	}
+}
+function changeFinishTimeParams(){
+	var value = $("#app-params-finishTime-select option:selected").attr("value")
+	if( value == -2 ){
+		$("#app-params-finishTime-divs")[0].style.display = "inline-block";
+		$("#app-params-finishTime-min")[0].value = unix_to_datetimeNoSecond(get_now_time()-(24*3600*1000));
+		$("#app-params-finishTime-max")[0].value = unix_to_datetimeNoSecond(get_now_time());
+	}
+	else{
+		$("#app-params-finishTime-divs")[0].style.display = "none";
+		if( value == -1 ){
+			$("#app-params-finishTime-min")[0].value = " ";
+			$("#app-params-finishTime-max")[0].value = " ";
+		}
+		else{
+			$("#app-params-finishTime-min")[0].value = unix_to_datetimeNoSecond(get_now_time()-(value*60000));
+			$("#app-params-finishTime-max")[0].value = " ";
+		}
+	}
+}
 function appQuery(){
 	loadAppSum()
 	loadAppList()
+	$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
 }

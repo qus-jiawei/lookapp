@@ -1,5 +1,6 @@
 //获取要展示的队列的html内容
 function formatElapsedTime(elapsedTime){
+	if( elapsedTime=="x" ) return elapsedTime;
 	var sec = Math.floor(elapsedTime/1000);
 	var min = Math.floor(sec/60);
 	sec = sec - min*60;
@@ -83,7 +84,7 @@ function loadRunningAppInfo(appid){
 				var key = keyList[k]
 				$("#"+appid+"-"+key).text(jobinfo[key])
 			}
-    	}
+		}
   	}
 	var url = "/db/appProxy?appid="+appid;
 	appQuery.open("GET",url,true);
