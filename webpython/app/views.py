@@ -75,11 +75,17 @@ def dbapplist():
     offset = getRequestInt("offset",0)
     limit = getRequestInt("limit",50)
     where = getRequestParam("where","1")
-    orderby = getRequestParam("orderby","appid desc")
+    orderField = getRequestParam("orderField","appid")
+    orderDirection = getRequestParam("orderDirection","desc")
     cursor = database.getCursor()
     selectKeyArray=["appid","user","name","queue","startedTime","finishedTime","state","finalStatus",
                "attemptNumber","mapsTotal","mapsCompleted","localMap","reducesTotal","reducesCompleted",
                "fileRead","fileWrite","hdfsRead","hdfsWrite"]
+    if orderField=="appid" :
+        selectKeyArray.append("CAST ( SUBSTR ( appid ,27,length(appid)-26 ) AS int ) as appnum")
+        orderby = "appnum "+orderDirection
+    else:
+        orderby = orderField+" "+orderDirection 
     selectKey = ",".join(selectKeyArray)
     sql = ("select "+selectKey+" from app where %s order by %s LIMIT %d OFFSET %d " % (where,orderby,limit,offset))
     print sql

@@ -23,11 +23,11 @@ function getParams(){
 	//order by
 	var orderField = $("#app-params-order-field")[0].value;
 	var orderDirection = $("#app-params-order-direction")[0].value;
-	var orderby=orderField+" "+orderDirection;
+//	var orderby=orderField+" "+orderDirection;
 	//获取offset
 	var nowpage = getCookie("nowpage");
 	var offset = (nowpage-1)*50;
-	return "where="+where+"&offset="+offset+"&limit=50"+"&orderby="+orderby;
+	return "where="+where+"&offset="+offset+"&limit=50"+"&orderField="+orderField+"&orderDirection="+orderDirection;
 }
 function em(text){
 	return "<em> "+text+" </em>"
