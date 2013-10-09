@@ -58,6 +58,8 @@
 							</div>
 						</div>
 					</div>
+					<input id="app-params-order-field" type="text" style="display:none;" value="appid">
+					<input id="app-params-order-direction" type="text" style="display:none;" value="desc">
 					<button style="width:70px;" class="btn btn-default" onclick="appQuery()">查询</button>
 				</div>
 			</div>
@@ -84,19 +86,19 @@
 					<table class="table table-bordered table-striped table-hover" id="apptable">
 						<thead>
 							<tr>
-								<th>应用id</th>
-								<th>用户</th>
-								<th>名称</th>
-								<th>队列</th>
-								<th>开始时间</th>
-								<th>结束时间</th>
-								<th>状态</th>
-								<th>结果</th>
-								<th>重试</th>
-								<th colspan="3">map(全部，完成，本地)</th>
-								<th colspan="2">reduce(全部，完成)</th>
-								<th colspan="2">本地读写(读，写)MB</th>
-    							<th colspan="2">HDFS读写(读，写)MB</th>
+								<th order-field="appid" >应用id</th>
+								<th order-field="user" >用户</th>
+								<th order-field="name" >名称</th>
+								<th order-field="queue"  >队列</th>
+								<th order-field="startedTime"  >开始时间</th>
+								<th order-field="finishedTime"  >结束时间</th>
+								<th order-field="state"  >状态</th>
+								<th order-field="finalStatus"  >结果</th>
+								<th order-field="attemptNumber"  >重试</th>
+								<th order-field="mapsTotal"  colspan="3">map(全部，完成，本地)</th>
+								<th order-field="reducesTotal"  colspan="2">reduce(全部，完成)</th>
+								<th order-field="fileRead"  colspan="2">本地读写(读，写)MB</th>
+    							<th order-field="hdfsRead"  colspan="2">HDFS读写(读，写)MB</th>
 							</tr>
 						</thead>
 						<tbody id="apptable-body">

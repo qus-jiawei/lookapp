@@ -16,19 +16,18 @@ function getParams(){
 	var startTimeMax = datetime_to_unix($("#app-params-startTime-max")[0].value);
 	var finishTimeMin = datetime_to_unix($("#app-params-finishTime-min")[0].value);
 	var finishTimeMax = datetime_to_unix($("#app-params-finishTime-max")[0].value);
-	console.log(startTimeMin)
-	console.log(startTimeMax)
-	console.log(finishTimeMin)
-	console.log(finishTimeMax)
 	if( startTimeMin != null ) where = where + ' and startedTime > ' + startTimeMin;
 	if( startTimeMax != null ) where = where + ' and startedTime < ' + startTimeMax;
 	if( finishTimeMin != null ) where = where + ' and finishedTime > ' + finishTimeMin;
 	if( finishTimeMax != null ) where = where + ' and finishedTime < ' + finishTimeMax;
-	//$("#app-params-finishTime").
+	//order by
+	var orderField = $("#app-params-order-field")[0].value;
+	var orderDirection = $("#app-params-order-direction")[0].value;
+	var orderby=orderField+" "+orderDirection;
 	//获取offset
 	var nowpage = getCookie("nowpage");
 	var offset = (nowpage-1)*50;
-	return "where="+where+"&offset="+offset+"&limit=50";
+	return "where="+where+"&offset="+offset+"&limit=50"+"&orderby="+orderby;
 }
 function em(text){
 	return "<em> "+text+" </em>"
@@ -150,7 +149,7 @@ function loadAppList()
     	}
   	}
 	var url = "db/appList?"+params;
-	console.log(url)
+//	console.log(url)
 	appQuery.open("GET",url,true);
 	appQuery.send();
 }
@@ -226,8 +225,25 @@ function changeFinishTimeParams(){
 		}
 	}
 }
+function changeOrder(event){
+	var field = event["target"].attributes["order-field"].value;
+	var temp = $("#app-params-order-field")[0].value;
+	if( temp == field ){
+		if( $("#app-params-order-direction")[0].value == "desc"){
+			$("#app-params-order-direction")[0].value="asc";
+		}
+		else{
+			$("#app-params-order-direction")[0].value="desc";
+		}
+	}
+	else{
+		$("#app-params-order-field")[0].value = field;
+	}
+	loadAppList()
+}
 function appQuery(){
 	loadAppSum()
 	loadAppList()
 	$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+	$("#apptable thead tr th").click(function(){changeOrder(event)});
 }
