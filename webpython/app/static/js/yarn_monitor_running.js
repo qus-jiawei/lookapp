@@ -1,4 +1,23 @@
 //获取要展示的队列的html内容
+function loadRunningState(){
+	var appQuery;
+	appQuery = new XMLHttpRequest();
+	appQuery.onreadystatechange=function(){
+		if (appQuery.readyState==4 && appQuery.status==200){
+			var response = JSON.parse(appQuery.responseText);
+			var result = response['clusterMetrics']
+			console.log(result)
+			var temp ="正在运行"+result['appsRunning']+"个应用，分配了"
+			+result['containersAllocated']+"个container，使用了"+result['allocatedMB']+"MB内存,"
+			+"剩余"+(result['availableMB']-result['allocatedMB'])+"MB内存。存活"+result['activeNodes']+"个NodeManager。";
+			$("#running-status").text(temp);
+//			console.log(temp)
+    	}
+  	}
+	var url = "db/appRunningState";
+	appQuery.open("GET",url,true);
+	appQuery.send();
+}
 function formatElapsedTime(elapsedTime){
 	if( elapsedTime=="x" ) return elapsedTime;
 	var sec = Math.floor(elapsedTime/1000);
@@ -7,34 +26,34 @@ function formatElapsedTime(elapsedTime){
 	return min+"m"+sec+"s";
 }
 function formatTableTd(key,value){
-	if( title == "startedTime"){
+	if( key == "startedTime"){
 		return unix_to_datetime(value);
 	}
-	else if( title == "progress"){
+	else if( key == "progress"){
 		return value.toFixed(1)+"%";
 	}
-	else if( title == "elapsedTime"){
+	else if( key == "elapsedTime"){
 		return formatElapsedTime(value)
 	}
-	else if(title =="amHostHttpAddress"){
+	else if(key =="amHostHttpAddress"){
 		return getNodeFromAddress(value)
 	}
-	else if(title =="id"){
+	else if(key =="id"){
 		last = value.lastIndexOf("_")
 		return "<a href=http://"+rmhost+":"+rmport+"/proxy/"+value+">"+value.substring(last+1)+"</a>"
 	}
 	return value
 }
 function getQueuePanelHtml(queueName,queue){
-	var displayTitleList = new Array("应用id","名称","AM机器","提交至今时间","进度","Am运行时间","Map(总数,待运行,正运行,失败,杀死,成功)","Reduce(总数,待运行,正运行,失败,杀死,成功)")
-	var titleList = new Array("id","name","amHostHttpAddress","elapsedTime","progress")
+	var displayTitleList = new Array("应用id","用户","名称","AM机器","提交至今时间","进度","Am运行时间","Map(总数,待运行,正运行,失败,杀死,成功)","Reduce(总数,待运行,正运行,失败,杀死,成功)")
+	var titleList = new Array("id","user","name","amHostHttpAddress","elapsedTime","progress")
 	var contentList = new Array();
 	for(var id in queue){
 		app = queue[id]
 		runningAppList.push(id)
 		var tds = new Array();
 		for(var key in titleList){
-			title = titleList[key];
+			var title = titleList[key];
 			tds[id+"-"+title]=formatTableTd(title,app[title])
 		}
 		//添加异步回调的td
@@ -107,6 +126,41 @@ function loadRunningApp(){
 	appQuery.open("GET",url,true);
 	appQuery.send();
 }
+function showWaittingApp(waittingApp){
+	rmhost = waittingApp['rmhost']
+	rmport = waittingApp['rmport']
+	$("#waitting-table-body").empty();
+	if( waittingApp['waitting'] != null){
+		for(var key in waittingApp['waitting']['app']){
+			app = waittingApp['waitting']['app'][key]
+			td = "<td>"+formatTableTd("id",app["id"])+"</td>";
+			td = td+"<td>"+formatTableTd("user",app["user"])+"</td>";
+			td = td+"<td>"+formatTableTd("name",app["name"])+"</td>";
+			td = td+"<td>"+formatTableTd("queue",app["queue"])+"</td>";
+			td = td+"<td>"+formatTableTd("elapsedTime",app["elapsedTime"])+"</td>";
+			tr="<tr>"+td+"</tr>";
+			$("#waitting-table-body").append(tr);
+		}
+	}
+	
+}
+function loadWaittingApp(){
+	var appQuery;
+	appQuery = new XMLHttpRequest();
+	appQuery.onreadystatechange=function(){
+		if (appQuery.readyState==4 && appQuery.status==200){
+			showWaittingApp(JSON.parse(appQuery.responseText));
+    	}
+  	}
+	var url = "db/appWaitting";
+	appQuery.open("GET",url,true);
+	appQuery.send();
+}
 function runningQuery(){
+	loadRunningState()
 	loadRunningApp()
+	loadWaittingApp()
+}
+function runningInit(){
+	
 }

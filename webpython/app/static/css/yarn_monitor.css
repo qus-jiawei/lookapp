@@ -25,6 +25,9 @@
   word-break:break-all;
   width:300px;
 }
+.draw-div-table{
+	height:300px;
+}
 .panel {
   margin-bottom: 20px;
   background-color: #ffffff;

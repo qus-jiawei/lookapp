@@ -131,6 +131,23 @@ def dbapprunning():
     retult={"queues":queues,"rmhost":config.rmhost,"rmport":config.rmport}
     return json.dumps(retult)
 
+@app.route('/db/hostlist')
+def dbhostlist():
+    return json.dumps(config.hosts);
+    
+@app.route('/db/appWaitting')
+def dbappwaitting():
+    url = ("http://%s:%s/ws/v1/cluster/apps?state=ACCEPTED" %(config.rmhost,config.rmport))
+    waittingApp = util.getHttpJson(url)
+    retult={"waitting":waittingApp["apps"],"rmhost":config.rmhost,"rmport":config.rmport}
+    return json.dumps(retult)
+
+@app.route('/db/appRunningState')
+def appRunningState():
+    url = ("http://%s:%s/ws/v1/cluster/metrics" %(config.rmhost,config.rmport))
+    metrics = util.getHttpJson(url)
+    return json.dumps(metrics)
+
 @app.route('/db/appProxy')
 def dbappproxy():
     appid = getRequestParam("appid","")
@@ -152,6 +169,67 @@ def dbappproxy():
             result[key] = "x"
         return json.dumps(result)
     
+@app.route('/db/nmQuery')
+def dbnmquery():
+    hosts  = getRequestArray("hosts",[]);
+    fields = getRequestArray("fields",[]); 
+    happenTimeMax = getRequestInt("happenTimeMax",0);
+    happenTimeMin = getRequestInt("happenTimeMin",0);
+    happenTimeSplit = getRequestInt("happenTimeSplit",600);
+    if len(hosts)!=0 and len(fields)!=0 :
+        where = "1"
+        if happenTimeMax != 0:
+            where = where + " and happenTime < "+str(happenTimeMax)
+        if happenTimeMin != 0:
+            where = where + " and happenTime > "+str(happenTimeMin)
+        
+        hostWhere = ""
+        for host in hosts:
+            hostWhere = hostWhere +'"' + host +'",'
+        hostWhere = hostWhere.rstrip(",")
+        where = where +' and host in ('+hostWhere+')'
+        
+        sqlFields=""
+        for field in fields:
+            sqlFields = sqlFields+" , sum("+field+") as " + field
+        
+        sql = ("select (happenTime/%d)*%d as printTime , host %s from nm where %s group by printTime,host" % (happenTimeSplit,happenTimeSplit,sqlFields,where) )
+        cursor = database.getCursor()
+        cursor.execute(sql)
+        sqlResult = cursor.fetchall()
+        queryResult = []
+        
+        #特殊处理mapTime和reduceTime
+        
+        for record in sqlResult:
+            queryResult.append(list(record))
+            
+        if "mapTime" in fields and "mapNum"  in fields :
+            timeIndex = fields.index("mapTime") + 2
+            numIndex = fields.index("mapNum") + 2
+            for record in queryResult:
+#                 return json.dumps(record)
+                if record[numIndex] != 0:
+                    record[timeIndex] = record[timeIndex] / record[numIndex] 
+        
+        if "reduceTime" in fields and "reduceNum"  in fields :
+            timeIndex = fields.index("reduceTime") + 2
+            numIndex = fields.index("reduceNum") + 2
+            for record in queryResult:
+                if record[numIndex] != 0:
+                    record[timeIndex] = record[timeIndex] / record[numIndex]
+        
+
+    else:
+        sql = ""
+        queryResult = []
+        
+    result= {"result":queryResult,"sql":sql}
+    return json.dumps(result)
+    
+#从request获取参数
+#数组是逗号分隔
+#o|o代表%
 def getRequestParam(key,default):
     temp = request.args.get(key)
     if temp == None or len(temp)==0:
@@ -161,5 +239,12 @@ def getRequestParam(key,default):
     
 def getRequestInt(key,default):
     return int(getRequestParam(key,default))
+
+def getRequestArray(key,default):
+    temp = getRequestParam(key,None)
+    if temp==None:
+        return default
+    else:
+        return temp.split(",")
 
 

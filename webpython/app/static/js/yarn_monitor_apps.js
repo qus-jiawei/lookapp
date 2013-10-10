@@ -247,3 +247,7 @@ function appQuery(){
 	$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
 	$("#apptable thead tr th").click(function(){changeOrder(event)});
 }
+function appInit(){
+	$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+	appQuery()
+}

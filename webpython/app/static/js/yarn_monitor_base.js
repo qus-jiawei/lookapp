@@ -52,7 +52,13 @@ function unix_to_datetimeNoSecond(unix) {
     return now.getFullYear()+"-"+padZero(now.getMonth()+1,2)+"-"+padZero(now.getDate(),2)+" "
     	+padZero(now.getHours(),2)+":"+padZero(now.getMinutes(),2);
 }
-function padZero(str, length) {
+function unix_to_datetimeInHighchart(unix) {
+    var now = new Date(parseInt(unix));
+    return now.getFullYear()+"-"+padZero(now.getMonth()+1,2)+"-"+padZero(now.getDate(),2)+"<br>"
+    	+padZero(now.getHours(),2)+":"+padZero(now.getMinutes(),2);
+}
+function padZero(inStr, length) {
+	var str = String(inStr)
     var strLen = str.length;
     return length > strLen ? new Array(length - strLen + 1).join("0") + str : str;
 }
@@ -106,4 +112,61 @@ function getTable(id,title,contentList){
 	return '<table class="table table-bordered table-striped table-hover" id="'+id+'">'+
 				'<thead>'+getTrTh(title)+'</thead>'+
 				'<tbody>'+body+'</tbody></table>';
+}
+function buildLineCharts(htmlId,title,xAxis,valueSuffix,series){
+	var tickInterval = Math.floor( xAxis.length/4 )+1
+	console.log(xAxis.length)
+	console.log(tickInterval)
+	var temp = {
+		    chart: {
+		        type: 'line'
+		    },
+		    title: {
+		        text: title,
+		        x: -20 //center
+		    },
+		    subtitle: {
+		        text: ' ',
+		        x: -20
+		    },
+		    xAxis: {
+		        categories: xAxis,
+		        labels:{ 
+		            step:1,
+		            rotation: -25,	
+//		            align: 'right',	
+		            style: { font: 'normal 13px Verdana, sans-serif'}
+		        },
+		    	tickInterval: tickInterval
+		    },
+		    yAxis: {
+		        title: {
+		            text: ' '
+		        },
+		        min: 0 ,
+		        plotLines: [{
+		            value: 0,
+		            width: 1,
+		            color: '#808080'
+		        }]
+		    },
+		    tooltip: {
+		    	shared: true,
+		        'valueSuffix': valueSuffix
+		    },
+		    plotOptions: {
+		        line: {
+		            marker: {
+		                radius: 1
+		            }
+		        }
+		    },
+		    credits: {
+		        'text': 'myhadoop',
+		        'href': 'http://github.com/zouhc/MyHadoop'
+		   },
+
+		    'series': series
+		}
+	$("#"+htmlId).highcharts(temp);
 }
