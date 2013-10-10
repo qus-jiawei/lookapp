@@ -96,16 +96,16 @@ function loadNmHost(){
 		if (appQuery.readyState==4 && appQuery.status==200){
 			
 			var hostJson = JSON.parse(appQuery.responseText);
-			var first = true;
+			var autoSelect = 5;
 			for(var key in hostJson){
 				var host = hostJson[key];
-				if(first){
-					first =false;
+				if( autoSelect > 0 ){
 					$("#nm-params-host-select").append("<option selected='selected' value='"+host+"'>"+host+"</option>");
 				}
 				else{
 					$("#nm-params-host-select").append("<option value='"+host+"'>"+host+"</option>");
 				}
+				autoSelect = autoSelect-1;
 			}
 			$("#nm-params-host-select").chosen({width:"600px"});
     	}
