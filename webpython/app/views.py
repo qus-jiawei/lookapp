@@ -209,14 +209,14 @@ def dbnmquery():
             numIndex = fields.index("mapNum") + 2
             for record in queryResult:
 #                 return json.dumps(record)
-                if record[numIndex] != 0:
+                if record[numIndex] != None and record[numIndex] != 0:
                     record[timeIndex] = record[timeIndex] / record[numIndex] 
         
         if "reduceTime" in fields and "reduceNum"  in fields :
             timeIndex = fields.index("reduceTime") + 2
             numIndex = fields.index("reduceNum") + 2
             for record in queryResult:
-                if record[numIndex] != 0:
+                if record[numIndex] != None and record[numIndex] != 0:
                     record[timeIndex] = record[timeIndex] / record[numIndex]
         
 
