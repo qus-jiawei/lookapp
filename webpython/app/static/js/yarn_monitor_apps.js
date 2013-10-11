@@ -244,10 +244,11 @@ function changeOrder(event){
 function appQuery(){
 	loadAppSum()
 	loadAppList()
-	$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
 	$("#apptable thead tr th").click(function(){changeOrder(event)});
 }
 function appInit(){
+	$("#app-params-finishTime-min")[0].value = unix_to_datetimeNoSecond(get_now_time()-(24*3600*1000));
+	$("#app-params-finishTime-max")[0].value = unix_to_datetimeNoSecond(get_now_time());
 	$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
 	appQuery()
 }
