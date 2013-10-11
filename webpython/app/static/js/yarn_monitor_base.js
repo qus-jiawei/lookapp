@@ -113,7 +113,7 @@ function getTable(id,title,contentList){
 				'<thead>'+getTrTh(title)+'</thead>'+
 				'<tbody>'+body+'</tbody></table>';
 }
-function buildLineCharts(htmlId,title,xAxis,valueSuffix,series){
+function buildLineCharts(htmlId,title,xAxis,formatter,series){
 	var tickInterval = Math.floor( xAxis.length/4 )+1
 //	console.log(xAxis.length)
 //	console.log(tickInterval)
@@ -152,7 +152,7 @@ function buildLineCharts(htmlId,title,xAxis,valueSuffix,series){
 		    },
 		    tooltip: {
 		    	shared: true,
-		        'valueSuffix': valueSuffix
+		        formatter:formatter
 		    },
 		    plotOptions: {
 		        line: {

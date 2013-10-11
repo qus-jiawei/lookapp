@@ -1,3 +1,14 @@
+function getRmValueFormatter(field){
+	switch(field){
+		case "hdfsWrite":
+		case "hdfsRead":
+		case "fileRead":
+		case "fileWrite":return (function(){return  (this.y/(1024*1024*1024)).toFixed(3)+" GB"; });
+		case "mapTime":
+		case "reduceTime":return (function(){return  (this.y/(1000)).toFixed(3)+" S"; });
+		default:return (function(){return this.y +" 个"; });
+	}
+}
 function drawRmHighChart(htmlid,field,dataPool,index,beginTime,endTime,split){
 	var begin = Math.floor(beginTime/split)*split;
 	var end = Math.floor(endTime/split)*split;
@@ -19,7 +30,7 @@ function drawRmHighChart(htmlid,field,dataPool,index,beginTime,endTime,split){
 	}
 	series.push({name:field,data:temp})
 	
-	buildLineCharts(htmlid,field,xAxis,"",series)	
+	buildLineCharts(htmlid,field,xAxis,getRmValueFormatter(field),series)	
 }
 function showRmData(data){
 	//分隔数据到各个指标
