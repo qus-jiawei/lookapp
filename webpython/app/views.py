@@ -200,21 +200,74 @@ def dbnmquery():
         queryResult = []
         
         #特殊处理mapTime和reduceTime
-        
+        #由于前面有printTime和host两个位置，所以偏移两位
+        fieldOffset = 2
         for record in sqlResult:
             queryResult.append(list(record))
             
         if "mapTime" in fields and "mapNum"  in fields :
-            timeIndex = fields.index("mapTime") + 2
-            numIndex = fields.index("mapNum") + 2
+            timeIndex = fields.index("mapTime") + fieldOffset
+            numIndex = fields.index("mapNum") + fieldOffset
             for record in queryResult:
 #                 return json.dumps(record)
                 if record[numIndex] != None and record[numIndex] != 0:
                     record[timeIndex] = record[timeIndex] / record[numIndex] 
         
         if "reduceTime" in fields and "reduceNum"  in fields :
-            timeIndex = fields.index("reduceTime") + 2
-            numIndex = fields.index("reduceNum") + 2
+            timeIndex = fields.index("reduceTime") + fieldOffset
+            numIndex = fields.index("reduceNum") + fieldOffset
+            for record in queryResult:
+                if record[numIndex] != None and record[numIndex] != 0:
+                    record[timeIndex] = record[timeIndex] / record[numIndex]
+        
+
+    else:
+        sql = ""
+        queryResult = []
+        
+    result= {"result":queryResult,"sql":sql}
+    return json.dumps(result)
+
+@app.route('/db/rmQuery')
+def dbrmquery():
+    fields = getRequestArray("fields",[]); 
+    happenTimeMax = getRequestInt("happenTimeMax",0);
+    happenTimeMin = getRequestInt("happenTimeMin",0);
+    happenTimeSplit = getRequestInt("happenTimeSplit",600);
+    if len(fields)!=0 :
+        where = "1"
+        if happenTimeMax != 0:
+            where = where + " and happenTime < "+str(happenTimeMax)
+        if happenTimeMin != 0:
+            where = where + " and happenTime > "+str(happenTimeMin)
+        
+        sqlFields=""
+        for field in fields:
+            sqlFields = sqlFields+" , sum("+field+") as " + field
+        
+        sql = ("select (happenTime/%d)*%d as printTime  %s from rm where %s group by printTime" % (happenTimeSplit,happenTimeSplit,sqlFields,where) )
+        cursor = database.getCursor()
+        cursor.execute(sql)
+        sqlResult = cursor.fetchall()
+        queryResult = []
+        
+        #特殊处理mapTime和reduceTime
+        #由于前面有一个printTime的查询，所以偏移一位
+        fieldOffset = 1
+        for record in sqlResult:
+            queryResult.append(list(record))
+            
+        if "mapTime" in fields and "mapNum"  in fields :
+            timeIndex = fields.index("mapTime") + fieldOffset
+            numIndex = fields.index("mapNum") + fieldOffset
+            for record in queryResult:
+#                 return json.dumps(record)
+                if record[numIndex] != None and record[numIndex] != 0:
+                    record[timeIndex] = record[timeIndex] / record[numIndex] 
+        
+        if "reduceTime" in fields and "reduceNum"  in fields :
+            timeIndex = fields.index("reduceTime") + fieldOffset
+            numIndex = fields.index("reduceNum") + fieldOffset
             for record in queryResult:
                 if record[numIndex] != None and record[numIndex] != 0:
                     record[timeIndex] = record[timeIndex] / record[numIndex]

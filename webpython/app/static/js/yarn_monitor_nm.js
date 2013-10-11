@@ -1,4 +1,4 @@
-function drawHighChart(htmlid,field,dataPool,index,hosts,beginTime,endTime,split){
+function drawNmHighChart(htmlid,field,dataPool,index,hosts,beginTime,endTime,split){
 	var begin = Math.floor(beginTime/split)*split;
 	var end = Math.floor(endTime/split)*split;
 	var xAxis = [];
@@ -26,9 +26,9 @@ function showNmData(data){
 	//分隔数据到各个指标
 	var fields = getNmFieldParams();
 	var hosts = getNmHostParams();
-	var happenTimeMin = getHappenTimeMinParams();
-	var happenTimeMax = getHappenTimeMaxParams();
-	var happenTimeSplit = getHappenTimeSplitParams();
+	var happenTimeMin = getNmHappenTimeMinParams();
+	var happenTimeMax = getNmHappenTimeMaxParams();
+	var happenTimeSplit = getNmHappenTimeSplitParams();
 	//转换data的result的记录形式从[time,host,xx,xx...]转换为[time][host][xx,xx...]
 	var dataPool = {}
 	for(var key in data['result']){
@@ -63,7 +63,7 @@ function showNmData(data){
 	for(var i=0;i<fields.length;i++){
 		var field = fields[i]
 		var htmlid = "nm-draw-div-table-"+i;
-		drawHighChart(htmlid,field,dataPool,i,hosts,happenTimeMin,happenTimeMax,happenTimeSplit)
+		drawNmHighChart(htmlid,field,dataPool,i,hosts,happenTimeMin,happenTimeMax,happenTimeSplit)
 	}	               
 	
 }
@@ -71,9 +71,9 @@ function loadNmData(){
 	var hosts = getNmHostParams();
 	var fields = getNmFieldParams();
 	
-	var happenTimeMin = getHappenTimeMinParams();
-	var happenTimeMax = getHappenTimeMaxParams();
-	var happenTimeSplit = getHappenTimeSplitParams();
+	var happenTimeMin = getNmHappenTimeMinParams();
+	var happenTimeMax = getNmHappenTimeMaxParams();
+	var happenTimeSplit = getNmHappenTimeSplitParams();
 	
 	var appQuery;
 	appQuery = new XMLHttpRequest();
@@ -163,11 +163,11 @@ function getNmFieldParams(){
 	}
 	return temp;
 }
-function getHappenTimeSplitParams(){
+function getNmHappenTimeSplitParams(){
 	var pick = $("#nm-params-happenTime-split-select option:selected");
 	return pick[0].value*60;
 }
-function getHappenTimeMinParams(){
+function getNmHappenTimeMinParams(){
 	var temp = datetime_to_unix($("#nm-params-happenTime-min")[0].value);
 	if(temp == null){
 		temp = get_unix_time()-24*3600;
@@ -175,7 +175,7 @@ function getHappenTimeMinParams(){
 	//temp = temp - 24*3600*20;
 	return temp;
 }
-function getHappenTimeMaxParams(){
+function getNmHappenTimeMaxParams(){
 	var temp = datetime_to_unix($("#nm-params-happenTime-max")[0].value);
 	if(temp == null){
 		temp = get_unix_time();

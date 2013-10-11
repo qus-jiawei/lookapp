@@ -115,8 +115,8 @@ function getTable(id,title,contentList){
 }
 function buildLineCharts(htmlId,title,xAxis,valueSuffix,series){
 	var tickInterval = Math.floor( xAxis.length/4 )+1
-	console.log(xAxis.length)
-	console.log(tickInterval)
+//	console.log(xAxis.length)
+//	console.log(tickInterval)
 	var temp = {
 		    chart: {
 		        type: 'line'
