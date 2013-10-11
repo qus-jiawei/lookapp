@@ -4,3 +4,4 @@
 from db import database
 
 database.initDB()
+database.createIndex()
