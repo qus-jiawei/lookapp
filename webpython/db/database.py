@@ -32,7 +32,14 @@ def initDB():
     applicationRecord.metadata.create_all(engine) 
     nmRecord.metadata.create_all(engine)
     rmRecord.metadata.create_all(engine)
-
+    
+def createIndex():
+    conn = sqlite3.connect(config.sqlitepath) 
+    cursor = conn.cursor()
+    cursor.execute('CREATE INDEX nm_happen_host ON nm(happenTime,host);');
+    cursor.execute('CREATE INDEX rm_happen ON rm(happenTime);');
+    cursor.execute('CREATE INDEX app_finish ON app(finishedTime);');
+    
 def showAll():
     conn = sqlite3.connect(config.sqlitepath) 
     cursor = conn.cursor()
