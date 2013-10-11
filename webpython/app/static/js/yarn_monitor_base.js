@@ -113,7 +113,29 @@ function getTable(id,title,contentList){
 				'<thead>'+getTrTh(title)+'</thead>'+
 				'<tbody>'+body+'</tbody></table>';
 }
-function buildLineCharts(htmlId,title,xAxis,formatter,series){
+function baseFormat(formatY) {
+    var s = '<b>'+ this.x +'</b>';
+    
+    $.each(this.points, function(i, point) {
+    	var temp = point.y;
+        s += '<br/>'+ point.series.name +': '+ temp;
+    });   
+    return s;
+}
+function getValueFormatter(field){
+	var formatY = null;
+	switch(field){
+		case "hdfsWrite":
+		case "hdfsRead":
+		case "fileRead":
+		case "fileWrite": formatY = (function(y){ return (y/(1024*1024*1024)).toFixed(3) +" GB"; });break;
+		case "mapTime":
+		case "reduceTime":formatY = (function(y){return (y/(1000)).toFixed(3)+" S"; });break;
+		default:formatY = (function(y){return y +" 个"; });break;
+	}
+	return formatY;
+}
+function buildLineCharts(htmlId,title,xAxis,formatY,series){
 	var tickInterval = Math.floor( xAxis.length/4 )+1
 //	console.log(xAxis.length)
 //	console.log(tickInterval)
@@ -152,7 +174,16 @@ function buildLineCharts(htmlId,title,xAxis,formatter,series){
 		    },
 		    tooltip: {
 		    	shared: true,
-		        formatter:formatter
+		        formatter:function() {
+	                var s = '<b>'+ this.x +'</b>';
+	                
+	                $.each(this.points, function(i, point) {
+	                	var temp = formatY(point.y)
+	                    s += '<br/>'+ point.series.name +': ' + temp;
+	                });
+	                
+	                return s;
+	            },
 		    },
 		    plotOptions: {
 		        line: {

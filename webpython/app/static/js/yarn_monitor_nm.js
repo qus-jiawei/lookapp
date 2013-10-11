@@ -1,14 +1,3 @@
-function getNmValueFormatter(field){
-	switch(field){
-		case "hdfsWrite":
-		case "hdfsRead":
-		case "fileRead":
-		case "fileWrite":return (function(){return  (this.y/(1024*1024*1024)).toFixed(3)+" GB"; });
-		case "mapTime":
-		case "reduceTime":return (function(){return  (this.y/(1000)).toFixed(3)+" S"; });
-		default:return (function(){return this.y +" 个"; });
-	}
-}
 function drawNmHighChart(htmlid,field,dataPool,index,hosts,beginTime,endTime,split){
 	var begin = Math.floor(beginTime/split)*split;
 	var end = Math.floor(endTime/split)*split;
@@ -32,7 +21,7 @@ function drawNmHighChart(htmlid,field,dataPool,index,hosts,beginTime,endTime,spl
 		series.push({name:host,data:temp})
 	}
 //	buildLineCharts(htmlid,field,xAxis," ",series)
-	buildLineCharts(htmlid,field,xAxis,getNmValueFormatter(field),series)	
+	buildLineCharts(htmlid,field,xAxis,getValueFormatter(field),series)	
 }
 function showNmData(data){
 	//分隔数据到各个指标
@@ -201,6 +190,6 @@ function nmInit(){
 	loadNmHost()
 	$("#nm-params-field-select").chosen({width:"600px"});
 	$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
-	console.log(getNmHostParams())
+//	console.log(getNmHostParams())
 	nmQuery()
 }
