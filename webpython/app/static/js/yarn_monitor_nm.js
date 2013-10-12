@@ -97,7 +97,7 @@ function loadNmHost(){
 		if (appQuery.readyState==4 && appQuery.status==200){
 			
 			var hostJson = JSON.parse(appQuery.responseText);
-			var autoSelect = 5;
+			var autoSelect = 2;
 			for(var key in hostJson){
 				var host = hostJson[key];
 				if( autoSelect > 0 ){
