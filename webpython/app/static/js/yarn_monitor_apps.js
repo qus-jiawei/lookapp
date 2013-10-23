@@ -244,7 +244,7 @@ function changeOrder(event){
 function appQuery(){
 	loadAppSum()
 	loadAppList()
-	$("#apptable thead tr th").click(function(){changeOrder(event)});
+	$(".order-th").click(function(){changeOrder(event)});
 }
 function appInit(){
 	$("#app-params-finishTime-min")[0].value = unix_to_datetimeNoSecond(get_now_time()-(24*3600*1000));

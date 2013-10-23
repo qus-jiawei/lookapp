@@ -86,19 +86,30 @@
 					<table class="table table-bordered table-striped table-hover" id="apptable">
 						<thead>
 							<tr>
-								<th order-field="appid" >应用id</th>
-								<th order-field="user" >用户</th>
-								<th order-field="name" >名称</th>
-								<th order-field="queue"  >队列</th>
-								<th order-field="startedTime"  >开始时间</th>
-								<th order-field="finishedTime"  >结束时间</th>
-								<th order-field="state"  >状态</th>
-								<th order-field="finalStatus"  >结果</th>
-								<th order-field="attemptNumber"  >重试</th>
-								<th order-field="mapsTotal"  colspan="3">map(全部，完成，本地)</th>
-								<th order-field="reducesTotal"  colspan="2">reduce(全部，完成)</th>
-								<th order-field="fileRead"  colspan="2">本地读写(读，写)MB</th>
-    							<th order-field="hdfsRead"  colspan="2">HDFS读写(读，写)MB</th>
+								<th order-field="appid" rowspan="2" class="order-th">应用id</th>
+								<th order-field="user" rowspan="2" class="order-th">用户</th>
+								<th order-field="name" rowspan="2" class="order-th">名称</th>
+								<th order-field="queue" rowspan="2" class="order-th" >队列</th>
+								<th order-field="startedTime" rowspan="2" class="order-th">开始时间</th>
+								<th order-field="finishedTime" rowspan="2" class="order-th">结束时间</th>
+								<th order-field="state" rowspan="2" class="order-th">状态</th>
+								<th order-field="finalStatus" rowspan="2" class="order-th">结果</th>
+								<th order-field="attemptNumber" rowspan="2" class="order-th" >重试</th>
+								<th order-field="mapsTotal"  colspan="3" class="order-th" >map</th>
+								<th order-field="reducesTotal"  colspan="2" class="order-th" >reduce</th>
+								<th order-field="fileRead"  colspan="2" class="order-th">本地读写MB</th>
+    							<th order-field="hdfsRead"  colspan="2" class="order-th">HDFS读写MB</th>
+							</tr>
+							<tr>
+								<th order-field="mapsTotal" class="order-th">全部</th>
+								<th order-field="mapsCompleted" class="order-th">完成</th>
+								<th order-field="localMap" class="order-th">本地</th>
+								<th order-field="reducesTotal" class="order-th">全部</th>
+								<th order-field="reducesCompleted" class="order-th">完成</th>
+								<th order-field="fileRead" class="order-th" >读</th>
+								<th order-field="fileWrite" class="order-th" >写</th>
+    							<th order-field="hdfsRead" class="order-th" >读</th>
+    							<th order-field="hdfsWrite" class="order-th" >写</th>
 							</tr>
 						</thead>
 						<tbody id="apptable-body">
