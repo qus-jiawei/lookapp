@@ -41,9 +41,14 @@ function getlength(obj){
 }
 //***********
 function incDomText(selecter,inc){
-	var now = parseInt($(selecter).text())
-	now += inc;
+	var now = myParseInt($(selecter).text())
+	now += myParseInt(inc);
 	$(selecter).text(now)
+}
+function myParseInt(text){
+	var temp = parseInt(text)
+	if( isNaN(temp) ) return 0;
+	else return temp;
 }
 //***********
 function datetime_to_unix(datetime){
