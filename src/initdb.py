@@ -3,5 +3,6 @@
 
 from db import database
 
-database.initDB()
+#database.dropDB()
+database.createDB()
 database.createIndex()

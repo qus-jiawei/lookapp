@@ -13,8 +13,11 @@ from db.nmRecord import nmRecord
 from db.rmRecord import rmRecord
 import sqlite3
 
+def getEngine():
+    return create_engine('sqlite:///'+config.sqlitepath, echo=True)
+
 def getSession():
-    engine = create_engine('sqlite:///'+config.sqlitepath, echo=True)
+    engine =  getEngine()
     Session = sessionmaker(bind=engine)
     session = Session()
     return session
@@ -23,15 +26,17 @@ def getCursor():
     conn = sqlite3.connect(config.sqlitepath) 
     return conn.cursor()
 
-def initDB():
-    engine = create_engine('sqlite:///'+config.sqlitepath, echo=True)
-    applicationRecord.metadata.drop_all(engine)
-    nmRecord.metadata.drop_all(engine)
-    rmRecord.metadata.drop_all(engine)
-
+def createDB():
+    engine = getEngine()
     applicationRecord.metadata.create_all(engine) 
     nmRecord.metadata.create_all(engine)
     rmRecord.metadata.create_all(engine)
+    
+def dropDB():
+    engine = getEngine()
+    applicationRecord.metadata.drop_all(engine)
+    nmRecord.metadata.drop_all(engine)
+    rmRecord.metadata.drop_all(engine)
     
 def createIndex():
     conn = sqlite3.connect(config.sqlitepath) 
@@ -39,6 +44,7 @@ def createIndex():
     cursor.execute('CREATE INDEX nm_happen_host ON nm(happenTime,host);');
     cursor.execute('CREATE INDEX rm_happen ON rm(happenTime);');
     cursor.execute('CREATE INDEX app_finish ON app(finishedTime);');
+#     cursor.execute('CREATE INDEX app_finish ON app(finishedTime);');
     
 def showAll():
     conn = sqlite3.connect(config.sqlitepath) 
@@ -69,7 +75,8 @@ def showAll():
 # engine.execute("select 1").scalar()
 
 if __name__ == "__main__":
-    initDB()
+    createDB()
+    dropDB()
     showAll()
 #     engine = create_engine('sqlite:///'+config.sqlitepath, echo=True)
 #     

@@ -40,7 +40,4 @@ class nmRecord(Base):
         
     def set(self,key,value):
         setattr(self,key,value)
-        
-    def getHaha(self):
-        return "haha"
     
