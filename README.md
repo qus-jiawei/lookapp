@@ -16,3 +16,6 @@ sh bin/start.sh
 
 
 
+如果遇到以下错误，请设置环境变量export GIT_SSL_NO_VERIFY=1
+
+  error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed while accessing https://github.com/qus-jiawei/yarn_monitor/info/refs?service=git-upload-pack
