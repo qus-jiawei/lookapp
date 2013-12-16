@@ -142,18 +142,20 @@ function baseFormat(formatY) {
     });   
     return s;
 }
-function getValueFormatter(field){
-	var formatY = null;
+function getValueFormatter(field,y){
 	switch(field){
 		case "hdfsWrite":
 		case "hdfsRead":
 		case "fileRead":
-		case "fileWrite": formatY = (function(y){ return (y/(1024*1024*1024)).toFixed(3) +" GB"; });break;
+		case "fileWrite": return (y/(1024*1024*1024)).toFixed(3) +" GB";
 		case "mapTime":
-		case "reduceTime":formatY = (function(y){return (y/(1000)).toFixed(3)+" S"; });break;
-		default:formatY = (function(y){return y +" 个"; });break;
+		case "reduceTime":return (y/(1000)).toFixed(3)+" S";
+		case "totalMB":
+		case "availableMB":
+		case "allocatedMB":return (y/(1024)).toFixed(3)+" GB";
+		default:return y +" 个";
 	}
-	return formatY;
+	return field+" "+y;
 }
 function buildLineCharts(htmlId,title,xAxis,formatY,series){
 	var tickInterval = Math.floor( xAxis.length/4 )+1
@@ -198,7 +200,7 @@ function buildLineCharts(htmlId,title,xAxis,formatY,series){
 	                var s = '<b>'+ this.x +'</b>';
 	                
 	                $.each(this.points, function(i, point) {
-	                	var temp = formatY(point.y)
+	                	var temp = formatY(point.series.name,point.y)
 	                    s += '<br/>'+ point.series.name +': ' + temp;
 	                });
 	                

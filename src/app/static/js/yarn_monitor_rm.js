@@ -19,7 +19,7 @@ function drawRmHighChart(htmlid,field,dataPool,index,beginTime,endTime,split){
 	}
 	series.push({name:field,data:temp})
 	
-	buildLineCharts(htmlid,field,xAxis,getValueFormatter(field),series)	
+	buildLineCharts(htmlid,field,xAxis,getValueFormatter,series)	
 }
 function showRmData(data){
 	//分隔数据到各个指标

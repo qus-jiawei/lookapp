@@ -41,11 +41,15 @@ class collector:
         #recordTime指向上个10分钟的开头时间，所以要往后移动一个10分钟
         meRecord =  metricsRecord(self.recordTime+config.collect_interval);
         recordKey=["appsCompleted","appsPending","appsRunning",
-                   "appsFailed","appsKilled","totalMB","allocatedMB",
-                   "containersAllocated","containersReserved",
-                   "containersPending","totalNodes","activeNodes"]
+                   "appsFailed","appsKilled",
+                   "totalMB","availableMB",
+                   "allocatedMB","containersAllocated",
+                   "totalNodes","activeNodes"]
+        #totalMB=availableMB+allocatedMB
+        temp = metrics['clusterMetrics'];
+        temp["totalMB"] = int(temp["availableMB"]) + int (temp["allocatedMB"])
         for key in recordKey:
-            meRecord.set(key,metrics['clusterMetrics'][key])
+            meRecord.set(key,temp[key])
         session = database.getSession()
         session.merge(meRecord)
         session.commit()

@@ -21,7 +21,7 @@ function drawNmHighChart(htmlid,field,dataPool,index,hosts,beginTime,endTime,spl
 		series.push({name:host,data:temp})
 	}
 //	buildLineCharts(htmlid,field,xAxis," ",series)
-	buildLineCharts(htmlid,field,xAxis,getValueFormatter(field),series)	
+	buildLineCharts(htmlid,field,xAxis,getValueFormatter,series)	
 }
 function showNmData(data){
 	//分隔数据到各个指标

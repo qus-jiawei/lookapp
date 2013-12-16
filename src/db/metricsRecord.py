@@ -20,10 +20,9 @@ class metricsRecord(Base):
     
     #资源分配
     totalMB = Column(Integer)
+    availableMB = Column(Integer)
     allocatedMB = Column(Integer)
     containersAllocated = Column(Integer)
-    containersReserved = Column(Integer)
-    containersPending = Column(Integer)
     
     #结点相关
     totalNodes = Column(SmallInteger)

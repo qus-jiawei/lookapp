@@ -22,7 +22,7 @@ function drawMetricsHighChart(htmlid,fields,dataPool,beginTime,endTime,split){
 		
 	}
 	console.log(series)
-	buildLineCharts(htmlid,field,xAxis,getValueFormatter(field),series)	
+	buildLineCharts(htmlid,field,xAxis,getValueFormatter,series)	
 }
 function showMetricsData(data){
 	//分隔数据到各个指标
@@ -89,9 +89,9 @@ function getMetricsFieldParams(){
 		}
 	    else if(  pick[i].value == "resource" ){
 			temp.push("totalMB")
+			temp.push("availableMB")
 			temp.push("allocatedMB")
 			temp.push("containersAllocated")
-			temp.push("containersReserved")
 		}
 		else if(  pick[i].value == "node" ){
 			temp.push("totalNodes")
