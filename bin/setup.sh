@@ -1,4 +1,8 @@
-python virtualenv.py flask
+#!/bin/bash
+BIN=$(cd $(dirname $0);pwd)
+ROOT=$(dirname $UP_BIN);
+cd $ROOT
+python src/virtualenv.py flask
 flask/bin/pip install flask
 flask/bin/pip install flask-login
 flask/bin/pip install flask-openid
