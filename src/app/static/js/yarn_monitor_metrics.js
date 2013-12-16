@@ -6,15 +6,13 @@ function drawMetricsHighChart(htmlid,fields,dataPool,beginTime,endTime,split){
 		xAxis.push(unix_to_datetimeInHighchart(i*1000))
 	}
 	var series = [];
-	var index = 0;
-	for(var key in fields){
-		var field = fields[key]
-		index++;
+	for(var index=0;index<fields.length;index++){
+		var field = fields[index]
 		var temp = new Array();
-		for(var i = begin;i<=end;i+=split){
-			if( (i in dataPool) ){
-				if( dataPool[i][index] != null){
-					temp.push(dataPool[i][index])
+		for(var nowTime = begin;nowTime<=end;nowTime+=split){
+			if( (nowTime in dataPool) ){
+				if( dataPool[nowTime][index] != null){
+					temp.push(dataPool[nowTime][index])
 					continue;
 				}
 			}
