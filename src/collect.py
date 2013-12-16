@@ -43,9 +43,7 @@ class collector:
                    "appsFailed","appsKilled","totalMB","allocatedMB",
                    "containersAllocated","containersReserved",
                    "containersPending","totalNodes","activeNodes"]
-        print metrics
         for key in recordKey:
-            print metrics['clusterMetrics'][key]
             meRecord.set(key,metrics['clusterMetrics'][key])
         session = database.getSession()
         session.merge(meRecord)
@@ -297,5 +295,5 @@ if __name__ == "__main__":
     coll = collector()
     coll.collectMetrics()
     #为了防止有些任务未成功收尾，延迟2分钟执行
-    time.sleep(120)
+    time.sleep(1)
     coll.collectApp()    

@@ -11,6 +11,7 @@ from sqlalchemy.orm import sessionmaker
 from db.applicationRecord import applicationRecord
 from db.nmRecord import nmRecord
 from db.rmRecord import rmRecord
+from db.metricsRecord import metricsRecord
 import sqlite3
 
 def getEngine():
@@ -31,19 +32,21 @@ def createDB():
     applicationRecord.metadata.create_all(engine) 
     nmRecord.metadata.create_all(engine)
     rmRecord.metadata.create_all(engine)
+    metricsRecord.metadata.create_all(engine)
     
 def dropDB():
     engine = getEngine()
     applicationRecord.metadata.drop_all(engine)
     nmRecord.metadata.drop_all(engine)
     rmRecord.metadata.drop_all(engine)
+    metricsRecord.metadata.drop_all(engine)
     
 def createIndex():
     conn = sqlite3.connect(config.sqlitepath) 
     cursor = conn.cursor()
-    cursor.execute('CREATE INDEX nm_happen_host ON nm(happenTime,host);');
-    cursor.execute('CREATE INDEX rm_happen ON rm(happenTime);');
-    cursor.execute('CREATE INDEX app_finish ON app(finishedTime);');
+    cursor.execute('CREATE INDEX IF NOT EXISTS nm_happen_host ON nm(happenTime,host);');
+    cursor.execute('CREATE INDEX IF NOT EXISTS rm_happen ON rm(happenTime);');
+    cursor.execute('CREATE INDEX IF NOT EXISTS app_finish ON app(finishedTime);');
 #     cursor.execute('CREATE INDEX app_finish ON app(finishedTime);');
     
 def showAll():
