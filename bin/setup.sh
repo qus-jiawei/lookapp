@@ -1,6 +1,6 @@
 #!/bin/bash
 BIN=$(cd $(dirname $0);pwd)
-ROOT=$(dirname $UP_BIN);
+ROOT=$(dirname $BIN);
 cd $ROOT
 python src/virtualenv.py flask
 flask/bin/pip install flask
