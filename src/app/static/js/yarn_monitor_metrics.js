@@ -1,3 +1,11 @@
+function formatValue(field,value){
+	switch(field){
+	case "totalMB":
+	case "availableMB":
+	case "allocatedMB": return value/1024;
+	default: return value;
+	}
+}
 function drawMetricsHighChart(htmlid,fields,dataPool,beginTime,endTime,split){
 	var begin = Math.floor(beginTime/split)*split;
 	var end = Math.floor(endTime/split)*split;
@@ -12,7 +20,7 @@ function drawMetricsHighChart(htmlid,fields,dataPool,beginTime,endTime,split){
 		for(var nowTime = begin;nowTime<=end;nowTime+=split){
 			if( (nowTime in dataPool) ){
 				if( dataPool[nowTime][index] != null){
-					temp.push(dataPool[nowTime][index])
+					temp.push(formatValue(field,dataPool[nowTime][index]))
 					continue;
 				}
 			}
@@ -126,7 +134,7 @@ function metricsQuery(){
 	loadMetricsData()
 }
 function metricsInit(){
-	$("#metrics-params-type-select").chosen({width:"600px"});
+//	$("#metrics-params-type-select").chosen({width:"120px"});
 	$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
 	metricsQuery()
 }

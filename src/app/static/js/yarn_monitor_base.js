@@ -152,7 +152,7 @@ function getValueFormatter(field,y){
 		case "reduceTime":return (y/(1000)).toFixed(3)+" S";
 		case "totalMB":
 		case "availableMB":
-		case "allocatedMB":return (y/(1024)).toFixed(3)+" GB";
+		case "allocatedMB":return y+" GB";
 		default:return y +" 个";
 	}
 	return field+" "+y;
