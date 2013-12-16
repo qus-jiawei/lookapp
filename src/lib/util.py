@@ -3,7 +3,7 @@
 
 import logging
 import urllib2
-from lib import config
+from conf import config
 import json
 from lib import log
 import threading
