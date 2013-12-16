@@ -38,7 +38,8 @@ class collector:
     def collectMetrics(self):
         #获取当前集群的状态
         metrics = self.getMetrics()
-        meRecord =  metricsRecord(self.recordTime);
+        #recordTime指向上个10分钟的开头时间，所以要往后移动一个10分钟
+        meRecord =  metricsRecord(self.recordTime+config.collect_interval);
         recordKey=["appsCompleted","appsPending","appsRunning",
                    "appsFailed","appsKilled","totalMB","allocatedMB",
                    "containersAllocated","containersReserved",
@@ -295,5 +296,5 @@ if __name__ == "__main__":
     coll = collector()
     coll.collectMetrics()
     #为了防止有些任务未成功收尾，延迟2分钟执行
-    time.sleep(1)
+    time.sleep(120)
     coll.collectApp()    

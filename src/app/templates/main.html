@@ -10,13 +10,16 @@
 						<a data-toggle="tab" href="#panel-1" onclick="runningInit()" >应用运行</a>
 					</li>
 					<li >
-						<a data-toggle="tab" href="#panel-2" onclick="rmInit()">集群历史状况</a>
+						<a data-toggle="tab" href="#panel-2" onclick="metricsInit()">集群快照状态查询</a>
+					</li>
+					<li >
+						<a data-toggle="tab" href="#panel-3" onclick="rmInit()">集群状况分析</a>
 					</li>
 					<li>
-						<a data-toggle="tab" href="#panel-3" onclick="nmInit()">NM历史状况</a>
+						<a data-toggle="tab" href="#panel-4" onclick="nmInit()">NM状况分析</a>
 					</li>
 					<li>
-						<a data-toggle="tab" href="#panel-4" onclick="appInit()">应用查询</a>
+						<a data-toggle="tab" href="#panel-5" onclick="appInit()">应用查询</a>
 					</li>
 				</ul>
 				<div class="tab-content">
@@ -24,12 +27,15 @@
 						{% include "running.html" %}
 					</div>
 					<div class="tab-pane" id="panel-2">
-						{% include "rm.html" %}
+						{% include "metrics.html" %}
 					</div>
 					<div class="tab-pane" id="panel-3">
-						{% include "nm.html" %}
+						{% include "rm.html" %}
 					</div>
 					<div class="tab-pane" id="panel-4">
+						{% include "nm.html" %}
+					</div>
+					<div class="tab-pane" id="panel-5">
 						{% include "apps.html" %}
 					</div>
 				</div>

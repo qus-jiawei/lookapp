@@ -59,6 +59,8 @@ def showAll():
     print cursor.fetchall()
     cursor.execute('select * from rm limit 10');
     print cursor.fetchall()
+    cursor.execute('select * from metrics limit 10');
+    print cursor.fetchall()
 # class User(Base):
 #     __tablename__ = 'users'
 #     id = Column(Integer, primary_key=True)
@@ -78,8 +80,8 @@ def showAll():
 # engine.execute("select 1").scalar()
 
 if __name__ == "__main__":
-    createDB()
     dropDB()
+    createDB()
     showAll()
 #     engine = create_engine('sqlite:///'+config.sqlitepath, echo=True)
 #     

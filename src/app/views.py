@@ -279,6 +279,31 @@ def dbrmquery():
         
     result= {"result":queryResult,"sql":sql}
     return json.dumps(result)
+
+@app.route('/db/metricsQuery')
+def dbmetricsquery():
+    fields = getRequestArray("fields",[]); 
+    recordTimeMax = getRequestInt("recordTimeMax",0);
+    recordTimeMin = getRequestInt("recordTimeMin",0);
+    recordTimeSplit = getRequestInt("recordTimeSplit",600);
+    if len(fields)!=0 :
+        recordTimeFilter = " ( recordTime % " + str(recordTimeSplit) + " = 0 ) ";
+        where = ( "recordTime >= %d and recordTime <= %d and %s" % ( recordTimeMin , recordTimeMax , recordTimeFilter ) )
+        sqlFields=""
+        for field in fields:
+            sqlFields = sqlFields+" , "+field;
+        sql = ("select recordTime %s from metrics where %s " % (sqlFields,where) )
+        cursor = database.getCursor()
+        cursor.execute(sql)
+        sqlResult = cursor.fetchall()
+        queryResult = []
+
+        for record in sqlResult:
+            queryResult.append(list(record))
+    
+    result= {"result":queryResult,"sql":sql}
+    return json.dumps(result)
+    
     
 #从request获取参数
 #数组是逗号分隔
