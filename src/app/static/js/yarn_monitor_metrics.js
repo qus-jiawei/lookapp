@@ -96,7 +96,7 @@ function getMetricsFieldParams(){
 			temp.push("appsKilled")
 		}
 	    else if(  pick[i].value == "resource" ){
-			temp.push("totalMB")
+			//temp.push("totalMB")
 			temp.push("availableMB")
 			temp.push("allocatedMB")
 			temp.push("containersAllocated")
