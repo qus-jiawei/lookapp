@@ -2,26 +2,47 @@
 	<div class="row-fluid">
 		<div class="span12">
 			<h3>
-				Hadoop Yarn监控系统
+				Hadoop Yarn监控系统&nbsp;
+				<i class="icon-question-sign" data-toggle="tooltip" data-placement="right" 
+					title="本系统针对yarn框架运行状况进行监控"></i>
 			</h3>
 			<div class="tabbable" id="tabs-262587">
 				<ul class="nav nav-tabs">
 					<li class="active">
-						<a data-toggle="tab" href="#panel-1" onclick="runningInit()" >应用运行</a>
+						<a data-toggle="tab" href="#panel-1" onclick="runningInit()" >应用运行&nbsp;
+						<i class="icon-question-sign" data-toggle="tooltip" data-placement="right" 
+							title="通过异步ajax加载展示当前集群的运行状况"></i>
+						</a>
 					</li>
 					<li >
-						<a data-toggle="tab" href="#panel-2" onclick="metricsInit()">集群快照状态查询</a>
+						<a data-toggle="tab" href="#panel-2" onclick="metricsInit()">集群快照状态查询&nbsp;
+						<i class="icon-question-sign" data-toggle="tooltip" data-placement="right" 
+							title="每10分钟采集一次当前集群的几个指标。不同时间点采集的数据不会进行合并"></i>
+						</a>
 					</li>
 					<li >
-						<a data-toggle="tab" href="#panel-3" onclick="rmInit()">集群状况分析</a>
+						<a data-toggle="tab" href="#panel-3" onclick="rmInit()">集群状况分析&nbsp;
+						<i class="icon-question-sign" data-toggle="tooltip" data-placement="right" 
+							title="通过分析采集到的app的状态，推算出集群的总体状况"></i>
+						</a>
 					</li>
 					<li>
-						<a data-toggle="tab" href="#panel-4" onclick="nmInit()">NM状况分析</a>
+						<a data-toggle="tab" href="#panel-4" onclick="nmInit()">NM状况分析 &nbsp;
+						<i class="icon-question-sign" data-toggle="tooltip" data-placement="right" 
+							title="通过分析采集到的app的状态，推算出每个NM的状况"></i>
+						</a>
 					</li>
 					<li>
-						<a data-toggle="tab" href="#panel-5" onclick="appInit()">应用查询</a>
+						<a data-toggle="tab" href="#panel-5" onclick="appInit()">应用查询 &nbsp;
+						<i class="icon-question-sign" data-toggle="tooltip" data-placement="right" 
+							title="通过关键字或者其它信息，筛选应用"></i>
+						</a>
+						
 					</li>
 				</ul>
+				<script>
+					$('.icon-question-sign').tooltip();
+				</script>
 				<div class="tab-content">
 					<div class="tab-pane  active" id="panel-1">
 						{% include "running.html" %}
